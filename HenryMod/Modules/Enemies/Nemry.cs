@@ -63,8 +63,8 @@ namespace HenryMod.Modules.Enemies
             characterEnabled = Modules.Config.CharacterEnableConfig("???");
             if (characterEnabled.Value)
             {
-                characterUnlockableDef = Modules.Unlockables.AddUnlockable<Achievements.NemryAchievement>(true);
-                masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Achievements.NemryMasteryAchievement>(true);
+                //characterUnlockableDef = Modules.Unlockables.AddUnlockable<Achievements.NemryAchievement>(true);
+                //masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Achievements.NemryMasteryAchievement>(true);
 
                 #region Player
                 characterPrefab = CreateBodyPrefab("NemryBody", true);

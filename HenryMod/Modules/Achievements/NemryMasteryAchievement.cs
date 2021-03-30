@@ -25,7 +25,7 @@ namespace HenryMod.Modules.Achievements
                                 Language.GetString(HenryPlugin.developerPrefix + "_NEMRY_BODY_MASTERYUNLOCKABLE_ACHIEVEMENT_DESC")
                             }));
 
-        public override BodyIndex LookUpRequiredBodyIndex()
+        public new BodyIndex LookUpRequiredBodyIndex()
         {
             return BodyCatalog.FindBodyIndex(Modules.Enemies.Nemry.bodyName);
         }

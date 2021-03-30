@@ -25,7 +25,7 @@ namespace HenryMod.Modules.Achievements
                                 Language.GetString(HenryPlugin.developerPrefix + "_HENRY_BODY_TYPHOONUNLOCKABLE_REWARD_ID")
                             }));
 
-        public override BodyIndex LookUpRequiredBodyIndex()
+        public new BodyIndex LookUpRequiredBodyIndex()
         {
             return BodyCatalog.FindBodyIndex(Modules.Survivors.Henry.instance.bodyName);
         }

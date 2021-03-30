@@ -25,7 +25,7 @@ namespace HenryMod.Modules.Achievements
                                 Language.GetString(HenryPlugin.developerPrefix + "_HENRY_BODY_VERGILUNLOCKABLE_ACHIEVEMENT_DESC")
                             }));
 
-        public override BodyIndex LookUpRequiredBodyIndex()
+        public new BodyIndex LookUpRequiredBodyIndex()
         {
             return BodyCatalog.FindBodyIndex(Modules.Survivors.Henry.instance.bodyName);
         }
