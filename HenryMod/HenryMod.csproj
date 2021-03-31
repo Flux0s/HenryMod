@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -151,7 +152,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call &quot;$(SolutionDir)scripts\post-build.bat&quot;" />
+    <Exec Command="call &quot;$(SolutionDir)scripts\post-build.bat&quot; &quot;$(TargetDir)&quot; &quot;$(TargetName)&quot; &quot;$(ConfigurationName)&quot;" />
   </Target>
 
 </Project>
