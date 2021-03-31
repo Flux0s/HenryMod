@@ -277,6 +277,114 @@ namespace HenryMod.Modules
             LanguageAPI.Add(prefix + "TYPHOONUNLOCKABLE_UNLOCKABLE_NAME", "Nemesis Henry: Grand Mastery");
             #endregion
             #endregion
+
+            #region Ekko
+            prefix = HenryPlugin.developerPrefix + "_EKKO_BODY_";
+
+            desc = "Ekko is a skilled fighter who makes use of a wide arsenal of weaponry to take down his foes.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine;
+            desc = desc + "< ! > Sword is a good all-rounder while Boxing Gloves are better for laying a beatdown on more powerful foes." + Environment.NewLine + Environment.NewLine;
+            desc = desc + "< ! > Pistol is a powerful anti air, with its low cooldown and high damage." + Environment.NewLine + Environment.NewLine;
+            desc = desc + "< ! > Roll has a lingering armor buff that helps to use it aggressively." + Environment.NewLine + Environment.NewLine;
+            desc = desc + "< ! > Bomb can be used to wipe crowds with ease." + Environment.NewLine + Environment.NewLine;
+
+            outro = "..and so he left, searching for a new identity.";
+            outroFailure = "..and so he vanished, forever a blank slate.";
+
+            LanguageAPI.Add(prefix + "NAME", "Ekko");
+            LanguageAPI.Add(prefix + "DESCRIPTION", desc);
+            LanguageAPI.Add(prefix + "SUBTITLE", "The Chosen One");
+            LanguageAPI.Add(prefix + "LORE", "sample lore");
+            LanguageAPI.Add(prefix + "OUTRO_FLAVOR", outro);
+            LanguageAPI.Add(prefix + "OUTRO_FAILURE", outroFailure);
+
+            #region Skins
+            LanguageAPI.Add(prefix + "DEFAULT_SKIN_NAME", "Default");
+            LanguageAPI.Add(prefix + "MASTERY_SKIN_NAME", "Alternate");
+            LanguageAPI.Add(prefix + "TYPHOON_SKIN_NAME", "V1");
+            LanguageAPI.Add(prefix + "DANTE_SKIN_NAME", "Dante");
+            LanguageAPI.Add(prefix + "VERGIL_SKIN_NAME", "Vergil");
+            #endregion
+
+            #region Passive
+            LanguageAPI.Add(prefix + "PASSIVE_NAME", "Ekko passive");
+            LanguageAPI.Add(prefix + "PASSIVE_DESCRIPTION", "Sample text.");
+            #endregion
+
+            #region Primary
+            LanguageAPI.Add(prefix + "PRIMARY_SLASH_NAME", "Sword");
+            LanguageAPI.Add(prefix + "PRIMARY_SLASH_DESCRIPTION", Helpers.agilePrefix + $"Swing forward for <style=cIsDamage>{100f * 2.8f}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "PRIMARY_PUNCH_NAME", "Boxing Gloves");
+            LanguageAPI.Add(prefix + "PRIMARY_PUNCH_DESCRIPTION", Helpers.agilePrefix + $"Punch rapidly for <style=cIsDamage>{100f * 2.4f}% damage</style>. <style=cIsUtility>Ignores armor.</style>");
+
+            LanguageAPI.Add(prefix + "PRIMARY_GUN_NAME", "Pistol");
+            LanguageAPI.Add(prefix + "PRIMARY_GUN_DESCRIPTION", Helpers.agilePrefix + $"Fire a small pistol for <style=cIsDamage>{100f * SkillStates.ShootAlt.damageCoefficient}% damage</style>.");
+            #endregion
+
+            #region Secondary
+            LanguageAPI.Add(prefix + "SECONDARY_GUN_NAME", "Handgun");
+            LanguageAPI.Add(prefix + "SECONDARY_GUN_DESCRIPTION", Helpers.agilePrefix + $"Fire a handgun for <style=cIsDamage>{100f * SkillStates.Shoot.damageCoefficient}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "SECONDARY_STINGER_NAME", "Stinger");
+            LanguageAPI.Add(prefix + "SECONDARY_STINGER_DESCRIPTION", Helpers.agilePrefix + $"Lunge at an enemy for <style=cIsDamage>{100f * SkillStates.Stinger.Stinger.damageCoefficient}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "SECONDARY_UZI_NAME", "Uzi");
+            LanguageAPI.Add(prefix + "SECONDARY_UZI_DESCRIPTION", $"Fire an uzi for <style=cIsDamage>{100f * SkillStates.ShootUzi.damageCoefficient}% damage</style>.");
+            #endregion
+
+            #region Utility
+            LanguageAPI.Add(prefix + "UTILITY_ROLL_NAME", "Roll");
+            LanguageAPI.Add(prefix + "UTILITY_ROLL_DESCRIPTION", "Roll a short distance, gaining <style=cIsUtility>300 armor</style>. <style=cIsUtility>You cannot be hit during the roll.</style>");
+
+            LanguageAPI.Add(prefix + "UTILITY_SHOTGUN_NAME", "Shotgun");
+            LanguageAPI.Add(prefix + "UTILITY_SHOTGUN_DESCRIPTION", $"Fire a <style=cIsUtility>shotgun</style> for <style=cIsDamage>{SkillStates.Henry.Shotgun.BaseShotgunBlast.bulletCount}x{100f * SkillStates.Henry.Shotgun.BaseShotgunBlast.damageCoefficient}% damage</style>, launching yourself with the recoil.");
+            #endregion
+
+            #region Special
+            LanguageAPI.Add(prefix + "SPECIAL_BOMB_NAME", "Bomb");
+            LanguageAPI.Add(prefix + "SPECIAL_BOMB_DESCRIPTION", $"Throw a bomb for <style=cIsDamage>{100f * SkillStates.ThrowBomb.damageCoefficient}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "SPECIAL_SCEPBOMB_NAME", "More Bombs!");
+            LanguageAPI.Add(prefix + "SPECIAL_SCEPBOMB_DESCRIPTION", $"Throw a bomb for <style=cIsDamage>{100f * SkillStates.ThrowBomb.damageCoefficient}% damage</style>." + Helpers.ScepterDescription("Hold up to 4 bombs. Cooldown is halved."));
+
+            LanguageAPI.Add(prefix + "SPECIAL_BAZOOKA_NAME", "Bazooka");
+            LanguageAPI.Add(prefix + "SPECIAL_BAZOOKA_DESCRIPTION", $"Charge and fire rockets for <style=cIsDamage>{100f * SkillStates.Bazooka.BazookaFire.minDamageCoefficient}%-{100f * SkillStates.Bazooka.BazookaFire.maxDamageCoefficient}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "PRIMARY_BAZOOKA_NAME", "Fire");
+            LanguageAPI.Add(prefix + "PRIMARY_BAZOOKA_DESCRIPTION", $"Charge and fire a rocket for <style=cIsDamage>{100f * SkillStates.Bazooka.BazookaFire.minDamageCoefficient}%-{100f * SkillStates.Bazooka.BazookaFire.maxDamageCoefficient}% damage</style>.");
+
+            LanguageAPI.Add(prefix + "PRIMARY_BAZOOKAOUT_NAME", "Cancel");
+            LanguageAPI.Add(prefix + "PRIMARY_BAZOOKAOUT_DESCRIPTION", "Put your <style=cIsDamage>bazooka</style> away.");
+
+            LanguageAPI.Add(prefix + "SPECIAL_SCEPBAZOOKA_NAME", "Armageddon");
+            LanguageAPI.Add(prefix + "SPECIAL_SCEPBAZOOKA_DESCRIPTION", $"Charge and fire rockets for <style=cIsDamage>{100f * SkillStates.Bazooka.Scepter.BazookaFire.minDamageCoefficient}%-{100f * SkillStates.Bazooka.Scepter.BazookaFire.maxDamageCoefficient}% damage</style>." + Helpers.ScepterDescription("Hold two Bazookas at once."));
+
+            LanguageAPI.Add(prefix + "PRIMARY_SCEPBAZOOKA_NAME", "Fire");
+            LanguageAPI.Add(prefix + "PRIMARY_SCEPBAZOOKA_DESCRIPTION", $"Charge and fire a rocket for <style=cIsDamage>{100f * SkillStates.Bazooka.Scepter.BazookaFire.minDamageCoefficient}%-{100f * SkillStates.Bazooka.Scepter.BazookaFire.maxDamageCoefficient}% damage</style>." + Helpers.ScepterDescription("Hold two Bazookas at once."));
+            #endregion
+
+            #region Achievements
+            LanguageAPI.Add(prefix + "UNLOCKABLE_ACHIEVEMENT_NAME", "Prelude");
+            LanguageAPI.Add(prefix + "UNLOCKABLE_ACHIEVEMENT_DESC", "Enter Titanic Plains.");
+            LanguageAPI.Add(prefix + "UNLOCKABLE_UNLOCKABLE_NAME", "Prelude");
+
+            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_ACHIEVEMENT_NAME", "Henry: Mastery");
+            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_ACHIEVEMENT_DESC", "As Henry, beat the game or obliterate on Monsoon.");
+            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_UNLOCKABLE_NAME", "Henry: Mastery");
+
+            LanguageAPI.Add(prefix + "TYPHOONUNLOCKABLE_ACHIEVEMENT_NAME", "Henry: Grand Mastery");
+            LanguageAPI.Add(prefix + "TYPHOONUNLOCKABLE_ACHIEVEMENT_DESC", "As Henry, beat the game or obliterate on Typhoon.");
+            LanguageAPI.Add(prefix + "TYPHOONUNLOCKABLE_UNLOCKABLE_NAME", "Henry: Grand Mastery");
+
+            LanguageAPI.Add(prefix + "DANTEUNLOCKABLE_ACHIEVEMENT_NAME", "Henry: Jackpot");
+            LanguageAPI.Add(prefix + "DANTEUNLOCKABLE_ACHIEVEMENT_DESC", "As Henry, defeat a Twisted Scavenger on Monsoon.");
+            LanguageAPI.Add(prefix + "DANTEUNLOCKABLE_UNLOCKABLE_NAME", "Henry: Jackpot");
+
+            LanguageAPI.Add(prefix + "VERGILUNLOCKABLE_ACHIEVEMENT_NAME", "Henry: 200% Motivated");
+            LanguageAPI.Add(prefix + "VERGILUNLOCKABLE_ACHIEVEMENT_DESC", "As Henry, defeat the King of Nothing with no items.");
+            LanguageAPI.Add(prefix + "VERGILUNLOCKABLE_UNLOCKABLE_NAME", "Henry: 200% Motivated");
+            #endregion
+            #endregion
         }
     }
 }
