@@ -235,6 +235,30 @@ namespace HenryMod.Modules.Survivors
             #endregion
 
             #region Utility
+            SkillDef phaseDiveSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "_EKKO_BODY_UTILITY_PHASEDIVE_NAME",
+                skillNameToken = prefix + "_EKKO_BODY_UTILITY_PHASEDIVE_NAME",
+                skillDescriptionToken = prefix + "_EKKO_BODY_UTILITY_PHASEDIVE_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texUtilityIcon"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.PhaseDive)),
+                activationStateMachineName = "Body",
+                baseMaxStock = 1,
+                baseRechargeInterval = 4f,
+                beginSkillCooldownOnSkillEnd = false,
+                canceledFromSprinting = false,
+                forceSprintDuringState = true,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.PrioritySkill,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = false,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = false,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1
+            });
+
             SkillDef rollSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
                 skillName = prefix + "_EKKO_BODY_UTILITY_ROLL_NAME",
@@ -283,7 +307,7 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
 
-            Modules.Skills.AddUtilitySkills(bodyPrefab, rollSkillDef, shotgunSkillDef);
+            Modules.Skills.AddUtilitySkills(bodyPrefab, phaseDiveSkillDef, rollSkillDef, shotgunSkillDef);
             #endregion
 
             #region Special
