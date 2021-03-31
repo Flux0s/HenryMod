@@ -104,6 +104,9 @@ namespace HenryMod.Modules.Survivors
         internal static SkillDef bazookaFireSkillDefScepter;
         internal static SkillDef bazookaCancelSkillDefScepter;
 
+		// phaseDive skill overrides
+		internal static SkillDef phaseDiveLungeSkillDef;
+
         internal override UnlockableDef characterUnlockableDef { get; set; }
         private static UnlockableDef masterySkinUnlockableDef;
         private static UnlockableDef grandMasterySkinUnlockableDef;
@@ -241,19 +244,43 @@ namespace HenryMod.Modules.Survivors
                 skillNameToken = prefix + "_EKKO_BODY_UTILITY_PHASEDIVE_NAME",
                 skillDescriptionToken = prefix + "_EKKO_BODY_UTILITY_PHASEDIVE_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texUtilityIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.PhaseDive)),
-                activationStateMachineName = "Body",
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveRoll)),
+                activationStateMachineName = "Weapon",
                 baseMaxStock = 1,
-                baseRechargeInterval = 4f,
-                beginSkillCooldownOnSkillEnd = false,
+                baseRechargeInterval = 1f,
+                beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = false,
                 forceSprintDuringState = true,
                 fullRestockOnAssign = true,
                 interruptPriority = EntityStates.InterruptPriority.PrioritySkill,
                 resetCooldownTimerOnUse = false,
-                isCombatSkill = false,
+                isCombatSkill = true,
                 mustKeyPress = false,
                 cancelSprintingOnActivation = false,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1
+            });
+
+            phaseDiveLungeSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "_EKKO_BODY_PRIMARY_PHASEDIVE_NAME",
+                skillNameToken = prefix + "_EKKO_BODY_PRIMARY_PHASEDIVE_NAME",
+                skillDescriptionToken = prefix + "_EKKO_BODY_PRIMARY_PHASEDIVE_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texStingerIcon"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveLunge)),
+                activationStateMachineName = "Weapon",
+                baseMaxStock = 1,
+                baseRechargeInterval = 0f,
+                beginSkillCooldownOnSkillEnd = false,
+                canceledFromSprinting = false,
+                forceSprintDuringState = false,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.Any,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = true,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = true,
                 rechargeStock = 1,
                 requiredStock = 1,
                 stockToConsume = 1
@@ -292,7 +319,7 @@ namespace HenryMod.Modules.Survivors
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Henry.Shotgun.ShotgunBlastEntry)),
                 activationStateMachineName = "Weapon",
                 baseMaxStock = 1,
-                baseRechargeInterval = 4f,
+                baseRechargeInterval = 0.51f,
                 beginSkillCooldownOnSkillEnd = false,
                 canceledFromSprinting = false,
                 forceSprintDuringState = true,

@@ -69,7 +69,7 @@ namespace HenryMod.Modules.Components
                 this.childLocator.FindChild("GunModel").GetComponent<SkinnedMeshRenderer>().sharedMesh = Modules.Assets.mainAssetBundle.LoadAsset<Mesh>("meshUzi");
             }
 
-            if (!hasTrackingSkill && this.tracker) Destroy(this.tracker);
+            if (!hasTrackingSkill && this.tracker) this.tracker.enabled = false;
         }
 
         public void UpdateCrosshair()

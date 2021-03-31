@@ -3,13 +3,13 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HenryMod.SkillStates
+namespace HenryMod.SkillStates.Ekko.PhaseDive
 {
-    public class PhaseDive : BaseSkillState
+    public class PhaseDiveRoll : BaseSkillState
     {
-        public static float duration = 0.5f;
-        public static float initialSpeedCoefficient = 5f;
-        public static float finalSpeedCoefficient = 2.5f;
+        public static float duration = 0.4f;
+        public static float initialSpeedCoefficient = 4f;
+        public static float finalSpeedCoefficient = 1f;
 
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = EntityStates.Commando.DodgeState.dodgeFOV;
@@ -46,19 +46,19 @@ namespace HenryMod.SkillStates
             Vector3 b = base.characterMotor ? base.characterMotor.velocity : Vector3.zero;
             this.previousPosition = base.transform.position - b;
 
-            base.PlayAnimation("FullBody, Override", "Roll", "Roll.playbackRate", Roll.duration);
-            Util.PlaySound(Roll.dodgeSoundString, base.gameObject);
+            base.PlayAnimation("FullBody, Override", "Roll", "Roll.playbackRate", PhaseDiveRoll.duration);
+            Util.PlaySound(PhaseDiveRoll.dodgeSoundString, base.gameObject);
 
             if (NetworkServer.active)
             {
-                base.characterBody.AddTimedBuff(Modules.Buffs.armorBuff, 3f * Roll.duration);
-                base.characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 0.5f * Roll.duration);
+                base.characterBody.AddTimedBuff(Modules.Buffs.armorBuff, 3f * PhaseDiveRoll.duration);
+                base.characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 0.5f * PhaseDiveRoll.duration);
             }
         }
 
         private void RecalculateRollSpeed()
         {
-            this.rollSpeed = this.moveSpeedStat * Mathf.Lerp(Roll.initialSpeedCoefficient, Roll.finalSpeedCoefficient, base.fixedAge / Roll.duration);
+            this.rollSpeed = this.moveSpeedStat * Mathf.Lerp(PhaseDiveRoll.initialSpeedCoefficient, PhaseDiveRoll.finalSpeedCoefficient, base.fixedAge / PhaseDiveRoll.duration);
         }
 
         public override void FixedUpdate()
@@ -67,7 +67,7 @@ namespace HenryMod.SkillStates
             this.RecalculateRollSpeed();
 
             if (base.characterDirection) base.characterDirection.forward = this.forwardDirection;
-            if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = Mathf.Lerp(Roll.dodgeFOV, 60f, base.fixedAge / Roll.duration);
+            if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = Mathf.Lerp(PhaseDiveRoll.dodgeFOV, 60f, base.fixedAge / PhaseDiveRoll.duration);
 
             Vector3 normalized = (base.transform.position - this.previousPosition).normalized;
             if (base.characterMotor && base.characterDirection && normalized != Vector3.zero)
@@ -81,9 +81,10 @@ namespace HenryMod.SkillStates
             }
             this.previousPosition = base.transform.position;
 
-            if (base.isAuthority && base.fixedAge >= Roll.duration)
+            if (base.isAuthority && base.fixedAge >= PhaseDiveRoll.duration)
             {
-                this.outer.SetNextStateToMain();
+                // this.outer.SetNextState(new PhaseDiveRollExit());
+                this.outer.SetNextState(new PhaseDiveRollExit());
                 return;
             }
         }
@@ -107,5 +108,10 @@ namespace HenryMod.SkillStates
             base.OnDeserialize(reader);
             this.forwardDirection = reader.ReadVector3();
         }
+
+		public override InterruptPriority GetMinimumInterruptPriority()
+		{
+			return InterruptPriority.Frozen;
+		}
     }
 }
