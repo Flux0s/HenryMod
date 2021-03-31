@@ -261,3 +261,8 @@ __pycache__/
 *.pyc
 
 scripts/post-build.bat
+
+libs/Assembly-CSharp.dll
+libs/MMHOOK_Assembly-CSharp.dll
+libs/ScrollableLobbyUI.dll
+libs/Rewired_Core.dll
