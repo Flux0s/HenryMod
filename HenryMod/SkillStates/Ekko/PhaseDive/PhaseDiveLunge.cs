@@ -30,7 +30,7 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
 			base.OnEnter();
 			this.tracker = base.GetComponent<HenryTracker>();
 			this.target = this.tracker.GetTrackingTarget();
-			Debug.LogWarning("Trying to invoke PhaseDiveLunge");
+			// Debug.LogWarning("Trying to invoke PhaseDiveLunge");
 
 			if (base.characterBody) base.characterBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
 
