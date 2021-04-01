@@ -7,7 +7,7 @@ namespace HenryMod.Modules.Components
     public class HenryTracker : MonoBehaviour
     {
         public float maxTrackingDistance = 40f;
-        public float maxTrackingAngle = 45f;
+        public float maxTrackingAngle = 20f;
         public float trackerUpdateFrequency = 10f;
 
         private HurtBox trackingTarget;

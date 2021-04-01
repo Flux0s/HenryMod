@@ -333,6 +333,9 @@ namespace HenryMod.Modules
             #endregion
 
             #region Utility
+            LanguageAPI.Add(prefix + "UTILITY_PHASEDIVE_NAME", "Phase Dive");
+            LanguageAPI.Add(prefix + "UTILITY_PHASEDIVE_DESCRIPTION", "Roll a short distance, gaining <style=cIsUtility>300 armor</style>. Gaining the ability to teleport to an nearby enemy. <style=cIsUtility>You cannot be hit during the roll.</style>");
+
             LanguageAPI.Add(prefix + "UTILITY_ROLL_NAME", "Roll");
             LanguageAPI.Add(prefix + "UTILITY_ROLL_DESCRIPTION", "Roll a short distance, gaining <style=cIsUtility>300 armor</style>. <style=cIsUtility>You cannot be hit during the roll.</style>");
 

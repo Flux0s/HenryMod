@@ -107,6 +107,11 @@ namespace HenryMod.Modules
             entityStates.Add(typeof(SkillStates.Nemry.Torrent.TorrentAir));
 
             entityStates.Add(typeof(SkillStates.Nemry.Burst));
+
+            entityStates.Add(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveRoll));
+            entityStates.Add(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveRollExit));
+            entityStates.Add(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveLunge));
+            entityStates.Add(typeof(SkillStates.Ekko.PhaseDive.PhaseDiveLungeExit));
         }
 
         // ignore this
