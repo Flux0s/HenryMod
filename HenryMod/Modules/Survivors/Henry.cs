@@ -10,6 +10,7 @@ namespace HenryMod.Modules.Survivors
     internal class Henry : SurvivorBase
     {
         internal override string bodyName { get; set; } = "Henry";
+        internal override string modelName { get; set; } = "Henry";
 
         internal override GameObject bodyPrefab { get; set; }
         internal override GameObject displayPrefab { get; set; }

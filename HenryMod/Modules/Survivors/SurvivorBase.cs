@@ -11,6 +11,7 @@ namespace HenryMod.Modules.Survivors
         internal static SurvivorBase instance;
 
         internal abstract string bodyName { get; set;  }
+        internal abstract string modelName { get; set;  }
 
         internal abstract GameObject bodyPrefab { get; set;  }
         internal abstract GameObject displayPrefab { get; set; }
@@ -42,14 +43,14 @@ namespace HenryMod.Modules.Survivors
 
             if (characterEnabled.Value)
             {
-                InitializeUnlockables();
+                // InitializeUnlockables();
 
-                bodyPrefab = Modules.Prefabs.CreatePrefab(bodyName + "Body", "mdl" + bodyName, bodyInfo);
+                bodyPrefab = Modules.Prefabs.CreatePrefab(bodyName + "Body", "mdl" + modelName, bodyInfo);
                 bodyPrefab.GetComponent<EntityStateMachine>().mainStateType = new EntityStates.SerializableEntityStateType(characterMainState);
 
                 Modules.Prefabs.SetupCharacterModel(bodyPrefab, customRendererInfos, mainRendererIndex);
 
-                displayPrefab = Modules.Prefabs.CreateDisplayPrefab(bodyName + "Display", bodyPrefab);
+                displayPrefab = Modules.Prefabs.CreateDisplayPrefab(modelName + "Display", bodyPrefab);
 
                 Modules.Prefabs.RegisterNewSurvivor(bodyPrefab, displayPrefab, Color.grey, bodyName.ToUpper(), characterUnlockableDef);
 
