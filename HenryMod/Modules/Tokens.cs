@@ -322,6 +322,9 @@ namespace HenryMod.Modules
             #endregion
 
             #region Secondary
+            LanguageAPI.Add(prefix + "SECONDARY_TIME_WINDER_NAME", "Timewinder");
+            LanguageAPI.Add(prefix + "SECONDARY_TIME_WINDER_DESCRIPTION", $"Throw a Timewinder which returns to Ekko dealing {100f * SkillStates.Ekko.TimeWinder.damageCoefficient} damage on the way out and on the way back.");
+
             LanguageAPI.Add(prefix + "SECONDARY_GUN_NAME", "Handgun");
             LanguageAPI.Add(prefix + "SECONDARY_GUN_DESCRIPTION", Helpers.agilePrefix + $"Fire a handgun for <style=cIsDamage>{100f * SkillStates.Shoot.damageCoefficient}% damage</style>.");
 
@@ -330,6 +333,7 @@ namespace HenryMod.Modules
 
             LanguageAPI.Add(prefix + "SECONDARY_UZI_NAME", "Uzi");
             LanguageAPI.Add(prefix + "SECONDARY_UZI_DESCRIPTION", $"Fire an uzi for <style=cIsDamage>{100f * SkillStates.ShootUzi.damageCoefficient}% damage</style>.");
+            
             #endregion
 
             #region Utility

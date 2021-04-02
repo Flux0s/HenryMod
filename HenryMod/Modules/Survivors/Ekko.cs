@@ -106,8 +106,8 @@ namespace HenryMod.Modules.Survivors
         internal static SkillDef bazookaFireSkillDefScepter;
         internal static SkillDef bazookaCancelSkillDefScepter;
 
-		// phaseDive skill overrides
-		internal static SkillDef phaseDiveLungeSkillDef;
+        // phaseDive skill overrides
+        internal static SkillDef phaseDiveLungeSkillDef;
 
         internal override UnlockableDef characterUnlockableDef { get; set; }
         private static UnlockableDef masterySkinUnlockableDef;
@@ -163,6 +163,30 @@ namespace HenryMod.Modules.Survivors
             #endregion
 
             #region Secondary
+            SkillDef timeWinderSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "_EKKO_BODY_SECONDARY_TIME_WINDER_NAME",
+                skillNameToken = prefix + "_EKKO_BODY_SECONDARY_TIME_WINDER_NAME",
+                skillDescriptionToken = prefix + "_EKKO_BODY_SECONDARY_TIME_WINDER_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSpecialIcon"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Ekko.TimeWinder)),
+                activationStateMachineName = "Slide",
+                baseMaxStock = 1,
+                baseRechargeInterval = 1f,
+                beginSkillCooldownOnSkillEnd = false,
+                canceledFromSprinting = false,
+                forceSprintDuringState = false,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.Skill,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = true,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = true,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1
+            });
+            
             SkillDef shootSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
                 skillName = prefix + "_EKKO_BODY_SECONDARY_GUN_NAME",
@@ -236,7 +260,7 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1,
             });
 
-            Modules.Skills.AddSecondarySkills(bodyPrefab, shootSkillDef, uziSkillDef, stingerSkillDef);
+            Modules.Skills.AddSecondarySkills(bodyPrefab, timeWinderSkillDef, shootSkillDef, uziSkillDef, stingerSkillDef);
             #endregion
 
             #region Utility
