@@ -3,6 +3,8 @@ using R2API.Utils;
 using RoR2;
 using System.Security;
 using System.Security.Permissions;
+using System.Linq;
+using UnityEngine;
 
 [module: UnverifiableCode]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
@@ -79,6 +81,16 @@ namespace HenryMod
         {
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) => 
+            {
+                CharacterBody victimCharacterBody = victim.GetComponent<CharacterBody>();
+                Debug.LogWarning("The name of the Attacker is: " + damageInfo.attacker.name);
+                //if (damageInfo.attacker == )
+                //{
+                //    victimCharacterBody.AddTimedBuff(Modules.Buffs.zDriveDebuff, 5f, HenryMod.Modules.Buffs.ZDriveMaxStacks);
+                //}
+                Debug.LogWarning("Buff Count Is: " + victimCharacterBody.GetBuffCount(Modules.Buffs.zDriveDebuff).ToString());
+            };
         }
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)

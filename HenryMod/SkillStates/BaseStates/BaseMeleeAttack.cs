@@ -220,5 +220,10 @@ namespace HenryMod.SkillStates.BaseStates
             base.OnDeserialize(reader);
             this.swingIndex = reader.ReadInt32();
         }
+
+        protected OverlapAttack GetOverlapAttack()
+        {
+            return this.attack;
+        }
     }
 }
