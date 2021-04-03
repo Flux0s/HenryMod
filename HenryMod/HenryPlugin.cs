@@ -3,6 +3,7 @@ using R2API.Utils;
 using RoR2;
 using System.Security;
 using System.Security.Permissions;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ namespace HenryMod
         public const string MODUID = "com.rob.HenryMod";
         public const string MODNAME = "HenryMod";
         public const string MODVERSION = "1.2.4";
+        
 
         // a prefix for name tokens to prevent conflicts
         public const string developerPrefix = "ROB";
@@ -81,15 +83,56 @@ namespace HenryMod
         {
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) => 
+            //Does some crazy stuff to only apply debuff when ekko hits an enemy with HIS attacks (not proc attack i.e. Ukulele)
+            On.RoR2.OverlapAttack.PerformDamage += (orig, attacker, inflictor, damage, isCrit,
+                procChainMask, procCoefficient, damageColorIndex, damageType, forceVector, pushAwayForce, hitList) =>
             {
-                CharacterBody victimCharacterBody = victim.GetComponent<CharacterBody>();
-                Debug.LogWarning("The name of the Attacker is: " + damageInfo.attacker.name);
-                //if (damageInfo.attacker == )
-                //{
-                //    victimCharacterBody.AddTimedBuff(Modules.Buffs.zDriveDebuff, 5f, HenryMod.Modules.Buffs.ZDriveMaxStacks);
-                //}
-                Debug.LogWarning("Buff Count Is: " + victimCharacterBody.GetBuffCount(Modules.Buffs.zDriveDebuff).ToString());
+                bool resetDamageType = false;
+                List<OverlapAttack.OverlapInfo> hitListCast = (List<OverlapAttack.OverlapInfo>)hitList;
+                if (attacker.name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    if (damageType == DamageType.BlightOnHit)
+                    {
+                        resetDamageType = true;
+                        hitListCast.RemoveAll(overlapInfo =>
+                        {
+                            HealthComponent healthComponent = overlapInfo.hurtBox.healthComponent;
+                            if (healthComponent)
+                            {
+                                var victimCharacterBody = healthComponent.gameObject.GetComponent<CharacterBody>();
+                                victimCharacterBody.AddTimedBuff(Modules.Buffs.zDriveDebuff, 5f, Modules.Buffs.ZDriveMaxStacks);
+                                if (victimCharacterBody.GetBuffCount(Modules.Buffs.zDriveDebuff) == Modules.Buffs.ZDriveMaxStacks)
+                                {
+                                    victimCharacterBody.ClearTimedBuffs(Modules.Buffs.zDriveDebuff);
+                                    float zDriveDamage = (damage * Modules.Buffs.ZDriveDamageBonus);
+                                    DamageInfo damageInfo = new DamageInfo();
+                                    damageInfo.attacker = attacker;
+                                    damageInfo.inflictor = inflictor;
+                                    damageInfo.force = forceVector + pushAwayForce * overlapInfo.pushDirection;
+                                    damageInfo.damage = zDriveDamage;
+                                    damageInfo.crit = isCrit;
+                                    damageInfo.position = overlapInfo.hitPosition;
+                                    damageInfo.procChainMask = procChainMask;
+                                    damageInfo.procCoefficient = procCoefficient;
+                                    damageInfo.damageColorIndex = damageColorIndex;
+                                    damageInfo.damageType = DamageType.Generic;
+                                    damageInfo.ModifyDamageInfo(overlapInfo.hurtBox.damageModifier);
+                                    healthComponent.TakeDamage(damageInfo);
+                                    GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
+                                    GlobalEventManager.instance.OnHitAll(damageInfo, healthComponent.gameObject);
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+                    }
+                }
+                if (resetDamageType)
+                {
+                    damageType = DamageType.Generic;
+                }
+                orig(attacker, inflictor, damage, isCrit, procChainMask, procCoefficient, damageColorIndex,
+                damageType, forceVector, pushAwayForce, hitList);
             };
         }
 

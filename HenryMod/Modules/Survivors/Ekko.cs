@@ -11,6 +11,8 @@ namespace HenryMod.Modules.Survivors
     {
         internal override string bodyName { get; set; } = "Ekko";
         internal override string modelName { get; set; } = "Henry";
+        //This sting is used for applying Ekko's passive to enemies.
+        internal static string EkkoName = "EkkoBody(Clone)";
 
         internal override GameObject bodyPrefab { get; set; }
         internal override GameObject displayPrefab { get; set; }
