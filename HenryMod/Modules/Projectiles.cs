@@ -11,6 +11,8 @@ namespace HenryMod.Modules
 {
     internal static class Projectiles
     {
+        internal static GameObject timewinderPrefab;
+
         internal static GameObject bombPrefab;
         internal static GameObject bazookaRocketPrefab;
 
@@ -19,10 +21,14 @@ namespace HenryMod.Modules
         internal static void RegisterProjectiles()
         {
             // only separating into separate methods for my sanity
+            CreateTimewinder();
+            
             CreateBomb();
             CreateBazookaRocket();
 
             CreateVoidBlast();
+
+            AddProjectile(timewinderPrefab);
 
             AddProjectile(bombPrefab);
             AddProjectile(bazookaRocketPrefab);
@@ -50,7 +56,7 @@ namespace HenryMod.Modules
             bombImpactExplosion.lifetimeAfterImpact = 0.1f;
 
             ProjectileDamage bombDamage = voidBlastPrefab.GetComponent<ProjectileDamage>();
-            bombDamage.damageType = DamageType.Nullify;
+            bombDamage.damageType = RoR2.DamageType.Nullify;
 
             ProjectileController bombController = voidBlastPrefab.GetComponent<ProjectileController>();
             bombController.ghostPrefab = Resources.Load<GameObject>("Prefabs/ProjectileGhosts/NullifierPreBombGhost");
@@ -78,6 +84,22 @@ namespace HenryMod.Modules
             bombController.ghostPrefab = CreateGhostPrefab("HenryBombGhost");
             bombController.startSound = "";
         }
+
+        private static void CreateTimewinder()
+        {
+			var timewinderPrefab = CloneProjectilePrefab("Sawmerang", "HenrySawmerang");
+			// SawmerangPrefab.GetComponent<ProjectileController>();
+
+			// timewinderPrefab.AddComponent<CustomProjectiles.TimewinderProjectile>();
+
+			// timewinderPrefab = new GameObject("timewinderPrefab");
+			// timewinderPrefab.AddComponent<ProjectileController>();
+			// timewinderPrefab.AddComponent<CustomProjectiles.TimewinderProjectile>();
+
+			// var boomerangProjectile = timewinderPrefab.GetComponent<BoomerangProjectile>();
+			// boomerangProjectile = (CustomProjectiles.TimewinderProjectile) boomerangProjectile;
+
+		}
 
         private static void CreateBazookaRocket()
         {
