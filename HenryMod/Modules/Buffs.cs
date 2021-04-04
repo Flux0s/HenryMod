@@ -10,6 +10,11 @@ namespace HenryMod.Modules
     {
         // armor buff gained during roll
         internal static BuffDef armorBuff;
+        internal static BuffDef zDriveDebuff;
+
+        internal static int ZDriveMaxStacks = 3;
+        internal static float ZDriveDamageBonus = 1.5f;
+
 
         internal static List<BuffDef> buffDefs = new List<BuffDef>();
 
@@ -19,6 +24,8 @@ namespace HenryMod.Modules
             IL.RoR2.BuffCatalog.Init += FixBuffCatalog;
 
             armorBuff = AddNewBuff("HenryArmorBuff", Resources.Load<Sprite>("Textures/BuffIcons/texBuffGenericShield"), Color.white, false, false);
+            //Makes a debuff for ekko's passive ability, Z-Drive Resonance
+            zDriveDebuff = AddNewBuff("Z-Drive Resonance Stacks", Resources.Load<Sprite>("Textures/BuffIcons/texBuffGenericShield"), Color.cyan, true, true);
         }
 
         internal static void FixBuffCatalog(ILContext il)

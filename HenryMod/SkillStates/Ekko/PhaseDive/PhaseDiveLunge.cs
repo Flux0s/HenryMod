@@ -48,7 +48,7 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
 			}
 
 			this.attack = new OverlapAttack();
-			this.attack.damageType = DamageType.Generic;
+			this.attack.damageType = DamageType.BlightOnHit;
 			this.attack.attacker = base.gameObject;
 			this.attack.inflictor = base.gameObject;
 			this.attack.teamIndex = base.GetTeam();

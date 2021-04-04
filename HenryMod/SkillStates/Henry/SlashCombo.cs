@@ -10,7 +10,8 @@ namespace HenryMod.SkillStates
         {
             this.hitboxName = "Sword";
 
-            this.damageType = DamageType.Generic;
+            //Damage is "blight" to activate Ekko's passive
+            this.damageType = DamageType.BlightOnHit;
             this.damageCoefficient = Modules.StaticValues.swordDamageCoefficient;
             this.procCoefficient = 1f;
             this.pushForce = 300f;
