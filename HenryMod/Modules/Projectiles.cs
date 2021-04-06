@@ -2,15 +2,16 @@
 using RoR2;
 using RoR2.Projectile;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using BepInEx;
 
 namespace HenryMod.Modules
 {
     internal static class Projectiles
     {
+        internal static GameObject timewinderPrefab;
+
         internal static GameObject bombPrefab;
         internal static GameObject bazookaRocketPrefab;
 
@@ -19,10 +20,14 @@ namespace HenryMod.Modules
         internal static void RegisterProjectiles()
         {
             // only separating into separate methods for my sanity
+            CreateTimewinder();
+
             CreateBomb();
             CreateBazookaRocket();
 
             CreateVoidBlast();
+
+            AddProjectile(timewinderPrefab);
 
             AddProjectile(bombPrefab);
             AddProjectile(bazookaRocketPrefab);
@@ -77,6 +82,36 @@ namespace HenryMod.Modules
             ProjectileController bombController = bombPrefab.GetComponent<ProjectileController>();
             bombController.ghostPrefab = CreateGhostPrefab("HenryBombGhost");
             bombController.startSound = "";
+        }
+
+        private static void CreateTimewinder()
+        {
+            timewinderPrefab = CloneProjectilePrefab("Sawmerang", "EkkoSawmerang");
+            CustomProjectiles.TimewinderProjectile timewinderProjectile = timewinderPrefab.AddComponent<CustomProjectiles.TimewinderProjectile>();
+
+            BoomerangProjectile boomerangProjectile = timewinderPrefab.GetComponent<BoomerangProjectile>();
+            timewinderProjectile.impactSpark = boomerangProjectile.impactSpark;
+            timewinderProjectile.crosshairPrefab = boomerangProjectile.crosshairPrefab;
+            BaseUnityPlugin.DestroyImmediate(boomerangProjectile);
+
+            timewinderProjectile.travelSpeed = 30f;
+            timewinderProjectile.slowDownMultiplier = 4f;
+            timewinderProjectile.returnSpeed = 60f;
+            timewinderProjectile.charge = 1f;
+            timewinderProjectile.transitionDuration = 1;
+            timewinderProjectile.canHitCharacters = false;
+            timewinderProjectile.canHitWorld = false;
+            timewinderProjectile.distanceMultiplier = 0.6f;
+
+            ProjectileDamage projectileDamage = timewinderPrefab.GetComponent<ProjectileDamage>();
+            projectileDamage.damageType = DamageType.BlightOnHit | DamageType.SlowOnHit;
+            // projectileDamage.damage = 1f;
+
+            ProjectileOverlapAttack projectileOverlapAttack = timewinderPrefab.GetComponent<ProjectileOverlapAttack>();
+            projectileOverlapAttack.SetDamageCoefficient(1f);
+
+            ProjectileDotZone projectileDotZone = timewinderPrefab.GetComponent<ProjectileDotZone>();
+            BaseUnityPlugin.DestroyImmediate(projectileDotZone);
         }
 
         private static void CreateBazookaRocket()

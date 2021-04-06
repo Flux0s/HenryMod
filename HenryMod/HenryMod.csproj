@@ -150,9 +150,7 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call &quot;$(SolutionDir)scripts\post-build.bat&quot; &quot;$(TargetDir)&quot; &quot;$(TargetName)&quot; &quot;$(ConfigurationName)&quot;" />
   </Target>
-
 </Project>
