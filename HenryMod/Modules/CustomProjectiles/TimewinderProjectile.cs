@@ -24,15 +24,9 @@ namespace HenryMod.Modules.CustomProjectiles
 
         private new void Start()
         {
-            float num = this.charge * 7f;
-            if (num < 1f)
-            {
-                num = 1f;
-            }
-            Vector3 localScale = new Vector3(num * base.transform.localScale.x, num * base.transform.localScale.y, num * base.transform.localScale.z);
-            // base.transform.localScale = localScale;
-            // base.gameObject.GetComponent<ProjectileController>().ghost.transform.localScale = localScale;
-            // base.GetComponent<ProjectileDotZone>().damageCoefficient *= num;
+            Vector3 localScale = new Vector3(this.baseScaleFactor * base.transform.localScale.x, this.baseScaleFactor * base.transform.localScale.y, this.baseScaleFactor * base.transform.localScale.z);
+            base.transform.localScale = localScale;
+            base.gameObject.GetComponent<ProjectileController>().ghost.transform.localScale = localScale;
         }
 
         public new void OnProjectileImpact(ProjectileImpactInfo impactInfo)
@@ -91,8 +85,7 @@ namespace HenryMod.Modules.CustomProjectiles
                             if (!this.slowDownFlag)
                             {
                                 this.slowDownFlag = true;
-                                float num = this.charge * 7f;
-                                Vector3 localScale = new Vector3(num * base.transform.localScale.x, num * base.transform.localScale.y, num * base.transform.localScale.z);
+                                Vector3 localScale = new Vector3(this.slowDownScaleFactor * base.transform.localScale.x, this.slowDownScaleFactor * base.transform.localScale.y, this.slowDownScaleFactor * base.transform.localScale.z);
                                 base.transform.localScale = localScale;
                                 base.gameObject.GetComponent<ProjectileController>().ghost.transform.localScale = localScale;
                                 this.rigidbody.velocity /= this.slowDownMultiplier;
@@ -108,32 +101,12 @@ namespace HenryMod.Modules.CustomProjectiles
                             }
                         }
                         break;
-                    case TimewinderProjectile.TimewinderState.Transition:
-                        {
-                            this.stopwatch += Time.fixedDeltaTime;
-                            float num = this.stopwatch / this.transitionDuration;
-                            Vector3 a = this.CalculatePullDirection();
-                            this.rigidbody.velocity = Vector3.Lerp(this.travelSpeed * base.transform.forward, this.travelSpeed * a, num);
-                            if (num >= 1f)
-                            {
-                                this.NetworktimewinderState = TimewinderProjectile.TimewinderState.FlyBack;
-                                UnityEvent unityEvent = this.onFlyBack;
-                                if (unityEvent == null)
-                                {
-                                    return;
-                                }
-                                unityEvent.Invoke();
-                                return;
-                            }
-                            break;
-                        }
                     case TimewinderProjectile.TimewinderState.FlyBack:
                         {
                             if (!this.returnFlag)
                             {
                                 this.returnFlag = true;
-                                float num = this.charge / 7f;
-                                Vector3 localScale = new Vector3(num * base.transform.localScale.x, num * base.transform.localScale.y, num * base.transform.localScale.z);
+                                Vector3 localScale = new Vector3(base.transform.localScale.x / this.slowDownScaleFactor, base.transform.localScale.y / this.slowDownScaleFactor, base.transform.localScale.z / this.slowDownScaleFactor);
                                 base.transform.localScale = localScale;
                                 base.gameObject.GetComponent<ProjectileController>().ghost.transform.localScale = localScale;
                             }
@@ -221,10 +194,11 @@ namespace HenryMod.Modules.CustomProjectiles
         public float returnSpeed = 60f;
         public float slowDownMultiplier = 2f;
         public float maxSlowDownStopwatch = 1.5f;
+        private float slowDownScaleFactor = 2f;
+        private float baseScaleFactor = 4f;
         private bool slowDownFlag = false;
         private bool returnFlag = false;
         public new float charge;
-        public new float transitionDuration;
         private new float maxFlyStopwatch;
         public new GameObject impactSpark;
         public new GameObject crosshairPrefab;
@@ -246,7 +220,6 @@ namespace HenryMod.Modules.CustomProjectiles
         {
             FlyOut,
             SlowDown,
-            Transition,
             FlyBack
         }
     }
