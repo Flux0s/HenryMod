@@ -7,7 +7,7 @@ namespace HenryMod.SkillStates.Ekko
 {
     public class TimeWinder : BaseSkillState
     {
-        public static float damageCoefficient = 16f;
+        public static float damageCoefficient = 10f;
         public static float procCoefficient = 1f;
         public static float baseDuration = 0.65f;
         public static float throwForce = 10f;

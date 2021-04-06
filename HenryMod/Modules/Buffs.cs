@@ -14,7 +14,7 @@ namespace HenryMod.Modules
 
         internal static int ZDriveMaxStacks = 3;
         internal static float ZDriveDamageBonus = 1.5f;
-
+        internal static float ZDriveduration = 6f;
 
         internal static List<BuffDef> buffDefs = new List<BuffDef>();
 

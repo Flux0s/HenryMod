@@ -91,7 +91,7 @@ namespace HenryMod
                 List<OverlapAttack.OverlapInfo> hitListCast = (List<OverlapAttack.OverlapInfo>)hitList;
                 if (attacker.name == Modules.Survivors.Ekko.EkkoName)
                 {
-                    if (damageType == DamageType.BlightOnHit)
+                    if ((damageType & DamageType.BlightOnHit) == DamageType.BlightOnHit)
                     {
                         resetDamageType = true;
                         hitListCast.RemoveAll(overlapInfo =>
@@ -100,7 +100,7 @@ namespace HenryMod
                             if (healthComponent)
                             {
                                 var victimCharacterBody = healthComponent.gameObject.GetComponent<CharacterBody>();
-                                victimCharacterBody.AddTimedBuff(Modules.Buffs.zDriveDebuff, 5f, Modules.Buffs.ZDriveMaxStacks);
+                                victimCharacterBody.AddTimedBuff(Modules.Buffs.zDriveDebuff, HenryMod.Modules.Buffs.ZDriveduration, Modules.Buffs.ZDriveMaxStacks);
                                 if (victimCharacterBody.GetBuffCount(Modules.Buffs.zDriveDebuff) == Modules.Buffs.ZDriveMaxStacks)
                                 {
                                     victimCharacterBody.ClearTimedBuffs(Modules.Buffs.zDriveDebuff);
@@ -115,7 +115,7 @@ namespace HenryMod
                                     damageInfo.procChainMask = procChainMask;
                                     damageInfo.procCoefficient = procCoefficient;
                                     damageInfo.damageColorIndex = damageColorIndex;
-                                    damageInfo.damageType = DamageType.Generic;
+                                    damageInfo.damageType = damageType & ~DamageType.BlightOnHit;
                                     damageInfo.ModifyDamageInfo(overlapInfo.hurtBox.damageModifier);
                                     healthComponent.TakeDamage(damageInfo);
                                     GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
@@ -129,7 +129,7 @@ namespace HenryMod
                 }
                 if (resetDamageType)
                 {
-                    damageType = DamageType.Generic;
+                    damageType = damageType & ~DamageType.BlightOnHit;
                 }
                 orig(attacker, inflictor, damage, isCrit, procChainMask, procCoefficient, damageColorIndex,
                 damageType, forceVector, pushAwayForce, hitList);
