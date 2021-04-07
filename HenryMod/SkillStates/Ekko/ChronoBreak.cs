@@ -9,13 +9,14 @@ namespace HenryMod.SkillStates.Ekko
     public class ChronoBreak : BaseSkillState
     {
         public static float dashSpeed = 50f;
-        public static float stopThreshold = 1f;
+        public static float stopThreshold = 2.5f;
 
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = EntityStates.Commando.DodgeState.dodgeFOV;
 
         private Animator animator;
-        private  List<DamageTrail.TrailPoint> storedPoints;
+        private List<DamageTrail.TrailPoint> storedPoints;
+        private int currentPoint;
 
         public override void OnEnter()
         {
@@ -29,6 +30,8 @@ namespace HenryMod.SkillStates.Ekko
             DamageTrail ChronoDamageTrail = base.GetComponent<DamageTrail>();
             if (ChronoDamageTrail.pointsList.Count > 0) storedPoints = ChronoDamageTrail.pointsList;
             else storedPoints = new List<DamageTrail.TrailPoint>();
+            currentPoint = storedPoints.Count - 2;
+            ChronoDamageTrail.active = false;
         }
        
         
@@ -43,8 +46,7 @@ namespace HenryMod.SkillStates.Ekko
         {
             base.FixedUpdate();
 
-
-            if (storedPoints.Count == 0)
+            if (storedPoints.Count == 1)
             {
                 this.outer.SetNextStateToMain();
                 return;
@@ -52,7 +54,7 @@ namespace HenryMod.SkillStates.Ekko
 
             if (base.isAuthority)
             {
-                Vector3 velocity = (storedPoints[storedPoints.Count - 1].position - base.transform.position).normalized * ChronoBreak.dashSpeed;
+                Vector3 velocity = (storedPoints[storedPoints.Count - 2].position - base.transform.position).normalized * ChronoBreak.dashSpeed;
                 base.characterMotor.velocity = velocity;
                 base.characterDirection.forward = base.characterMotor.velocity.normalized;
 
@@ -65,9 +67,14 @@ namespace HenryMod.SkillStates.Ekko
 
                 //this.attack.forceVector = base.characterMotor.velocity.normalized * PhaseDiveLunge.pushForce;
 
-                if (Reel(base.transform.position, storedPoints[storedPoints.Count - 1].position))
+                if (Reel(base.transform.position, storedPoints[storedPoints.Count - 2].position))
                 {
-                    storedPoints.RemoveAt(storedPoints.Count - 1);
+
+                    if (storedPoints.Count == 1)
+                    {
+                        return;
+                    }
+                    storedPoints.RemoveAt(storedPoints.Count - 2);
                     return;
                 }
             }
@@ -88,6 +95,7 @@ namespace HenryMod.SkillStates.Ekko
 
             base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
             base.characterMotor.velocity = new Vector3(0f, 0f, 0f);
+            base.GetComponent<DamageTrail>().active = true;
         }
 
         //public override void OnSerialize(NetworkWriter writer)

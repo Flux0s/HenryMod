@@ -133,8 +133,6 @@ namespace HenryMod.Modules.Survivors
             chronoBreakTrail.destroyTrailSegments = true;
             chronoBreakTrail.owner = this.bodyPrefab;
             chronoBreakTrail.lineRenderer.endWidth = .5f;
-            //chronoBreakTrail.lineRenderer.startColor = Color.cyan;
-            //chronoBreakTrail.lineRenderer.endColor = Color.blue;
             chronoBreakTrail.lineRenderer.material.SetColor("_Color", Color.cyan);
             chronoBreakTrail.pointUpdateInterval = .125f;
             chronoBreakTrail.pointLifetime = 4f;
@@ -501,7 +499,7 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
 
-            Modules.Skills.AddSpecialSkills(bodyPrefab, bombSkillDef, bazookaSkillDef, ChronoSkillDef);
+            Modules.Skills.AddSpecialSkills(bodyPrefab, ChronoSkillDef, bombSkillDef, bazookaSkillDef);
             #endregion
         }
 
