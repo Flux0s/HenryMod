@@ -9,55 +9,72 @@ namespace HenryMod.Modules.Survivors
 {
     internal class MyCharacter : SurvivorBase
     {
-        internal override string bodyName { get; set; } = "Henry";
+
+        public MyCharacter()
+        {
+            Debug.LogWarning("Entered character constructor!");
+            this.bodyName = "Henry";
+            this.survivorSortPosition = 100f;
+            var characterIcon = Modules.Assets.LoadCharacterIcon("Henry");
+            var crosshair = Modules.Assets.LoadCrosshair("Standard");
+            Debug.LogWarning("  Initializing BodyInfo!");
+            this.bodyInfo = new BodyInfo
+            {
+                armor = 20f,
+                armorGrowth = 0f,
+                bodyName = bodyName + "Body",
+                bodyNameToken = HenryPlugin.developerPrefix + "_HENRY_BODY_NAME",
+                bodyColor = Color.grey,
+                characterPortrait = characterIcon,
+                crosshair = crosshair,
+                damage = 12f,
+                healthGrowth = 33f,
+                healthRegen = 1.5f,
+                jumpCount = 1,
+                maxHealth = 110f,
+                subtitleNameToken = HenryPlugin.developerPrefix + "_HENRY_BODY_SUBTITLE",
+                podPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod")
+            };
+            this.mainRendererIndex = 2;
+            Debug.LogWarning("  Initializing customRenderInfos!");
+            this.customRendererInfos = new CustomRendererInfo[] {
+                new CustomRendererInfo
+                {
+                    childName = "SwordModel",
+                    material = Modules.Assets.CreateMaterial("matHenry"),
+                },
+                new CustomRendererInfo
+                {
+                    childName = "GunModel",
+                    material = Modules.Assets.CreateMaterial("matHenry"),
+                },
+                new CustomRendererInfo
+                {
+                    childName = "Model",
+                    material = Modules.Assets.CreateMaterial("matHenry")
+                }};
+            this.characterMainState = typeof(EntityStates.GenericCharacterMain);
+            this.characterSpawnState = typeof(EntityStates.GenericCharacterSpawnState);
+            Debug.LogWarning("  Completed character constructor!");
+        }
+        internal override string bodyName { get; set; }
 
         internal override GameObject bodyPrefab { get; set; }
         internal override GameObject displayPrefab { get; set; }
 
         internal override ConfigEntry<bool> characterEnabled { get; set; }
 
-        internal override float survivorSortPosition { get; set; } = 100f;
+        internal override float survivorSortPosition { get; set; }
 
-        internal override BodyInfo bodyInfo { get; set; } = new BodyInfo
-        {
-            armor = 20f,
-            armorGrowth = 0f,
-            bodyName = instance.bodyName + "Body",
-            bodyNameToken = HenryPlugin.developerPrefix + "_HENRY_BODY_NAME",
-            bodyColor = Color.grey,
-            characterPortrait = Modules.Assets.LoadCharacterIcon("Henry"),
-            crosshair = Modules.Assets.LoadCrosshair("Standard"),
-            damage = 12f,
-            healthGrowth = 33f,
-            healthRegen = 1.5f,
-            jumpCount = 1,
-            maxHealth = 110f,
-            subtitleNameToken = HenryPlugin.developerPrefix + "_HENRY_BODY_SUBTITLE",
-            podPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod")
-        };
+        internal override BodyInfo bodyInfo { get; set; }
 
-        internal static Material henryMat = Modules.Assets.CreateMaterial("matHenry");
-        internal override int mainRendererIndex { get; set; } = 2;
+        // internal static Material henryMat = Modules.Assets.CreateMaterial("matHenry");
+        internal override int mainRendererIndex { get; set; }
 
-        internal override CustomRendererInfo[] customRendererInfos { get; set; } = new CustomRendererInfo[] {
-                new CustomRendererInfo
-                {
-                    childName = "SwordModel",
-                    material = henryMat,
-                },
-                new CustomRendererInfo
-                {
-                    childName = "GunModel",
-                    material = henryMat,
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Model",
-                    material = henryMat
-                }};
+        internal override CustomRendererInfo[] customRendererInfos { get; set; }
 
-        internal override Type characterMainState { get; set; } = typeof(EntityStates.GenericCharacterMain);
-        internal override Type characterSpawnState { get; set; } = typeof(EntityStates.GenericCharacterSpawnState);
+        internal override Type characterMainState { get; set; }
+        internal override Type characterSpawnState { get; set; }
 
         internal override ItemDisplayRuleSet itemDisplayRuleSet { get; set; }
         internal override List<ItemDisplayRuleSet.KeyAssetRuleGroup> itemDisplayRules { get; set; }
@@ -182,6 +199,7 @@ namespace HenryMod.Modules.Survivors
 
         internal override void InitializeSkins()
         {
+            Debug.LogWarning("Initializing skins...");
             GameObject model = bodyPrefab.GetComponentInChildren<ModelLocator>().modelTransform.gameObject;
             CharacterModel characterModel = model.GetComponent<CharacterModel>();
 
@@ -194,6 +212,7 @@ namespace HenryMod.Modules.Survivors
 
             List<SkinDef> skins = new List<SkinDef>();
 
+            Debug.LogWarning("  Variables populated!");
             #region DefaultSkin
             SkinDef defaultSkin = Modules.Skins.CreateSkinDef(HenryPlugin.developerPrefix + "_HENRY_BODY_DEFAULT_SKIN_NAME",
                 Assets.mainAssetBundle.LoadAsset<Sprite>("texMainSkin"),
@@ -221,15 +240,18 @@ namespace HenryMod.Modules.Survivors
             };
 
             skins.Add(defaultSkin);
+            Debug.LogWarning("  Default skin done!");
             #endregion
 
             #region MasterySkin
+            Debug.LogWarning("  Initializing mastery skin!");
             Material masteryMat = Modules.Assets.CreateMaterial("matHenryAlt");
             CharacterModel.RendererInfo[] masteryRendererInfos = SkinRendererInfos(defaultRenderers, new Material[]
             {
                 masteryMat,
                 masteryMat
             });
+            Debug.LogWarning("      Mastery material done!");
 
             SkinDef masterySkin = Modules.Skins.CreateSkinDef(HenryPlugin.developerPrefix + "_HENRY_BODY_MASTERY_SKIN_NAME",
                 Assets.mainAssetBundle.LoadAsset<Sprite>("texMasteryAchievement"),
@@ -237,6 +259,7 @@ namespace HenryMod.Modules.Survivors
                 mainRenderer,
                 model,
                 masterySkinUnlockableDef);
+            Debug.LogWarning("      Mastery SkinDef created!");
 
             masterySkin.meshReplacements = new SkinDef.MeshReplacement[]
             {
@@ -251,8 +274,10 @@ namespace HenryMod.Modules.Survivors
                     renderer = defaultRenderers[instance.mainRendererIndex].renderer
                 }
             };
+            Debug.LogWarning("      Mastery skin meshReplacements done!");
 
             skins.Add(masterySkin);
+            Debug.LogWarning("  Mastery skin done!");
             #endregion
 
             skinController.skins = skins.ToArray();
@@ -264,7 +289,7 @@ namespace HenryMod.Modules.Survivors
             defaultRenderers.CopyTo(newRendererInfos, 0);
 
             newRendererInfos[0].defaultMaterial = materials[0];
-            newRendererInfos[instance.mainRendererIndex].defaultMaterial = materials[2];
+            newRendererInfos[instance.mainRendererIndex].defaultMaterial = materials[1];
 
             return newRendererInfos;
         }

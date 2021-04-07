@@ -34,7 +34,8 @@ namespace HenryMod.Modules.Survivors
 
         internal virtual void Initialize()
         {
-            instance = this;
+			Debug.LogWarning("Entered character initialization!");
+			instance = this;
             InitializeCharacter();
         }
 
