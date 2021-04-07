@@ -93,7 +93,7 @@ namespace HenryMod.Modules.Survivors
                     material = henryMat
                 }};
 
-        internal override Type characterMainState { get; set; } = typeof(SkillStates.HenryMain);
+        internal override Type characterMainState { get; set; } = typeof(SkillStates.Ekko.EkkoMain);
 
         // item display stuffs
         internal override ItemDisplayRuleSet itemDisplayRuleSet { get; set; }
@@ -122,6 +122,23 @@ namespace HenryMod.Modules.Survivors
             this.bodyPrefab.GetComponent<SfxLocator>().deathSound = "HenryDeath";
             this.bodyPrefab.AddComponent<Components.HenryController>();
             this.bodyPrefab.AddComponent<Components.HenryTracker>();
+
+            InitializeChronoBreakTrail();
+        }
+
+        internal void InitializeChronoBreakTrail()
+        {
+            DamageTrail chronoBreakTrail = this.bodyPrefab.AddComponent<DamageTrail>();
+            chronoBreakTrail.lineRenderer = this.bodyPrefab.AddComponent<LineRenderer>();
+            chronoBreakTrail.destroyTrailSegments = true;
+            chronoBreakTrail.owner = this.bodyPrefab;
+            chronoBreakTrail.lineRenderer.endWidth = .5f;
+            //chronoBreakTrail.lineRenderer.startColor = Color.cyan;
+            //chronoBreakTrail.lineRenderer.endColor = Color.blue;
+            chronoBreakTrail.lineRenderer.material.SetColor("_Color", Color.cyan);
+            chronoBreakTrail.pointUpdateInterval = .125f;
+            chronoBreakTrail.pointLifetime = 4f;
+            chronoBreakTrail.active = true;
         }
 
         internal override void InitializeUnlockables()
@@ -460,7 +477,31 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
 
-            Modules.Skills.AddSpecialSkills(bodyPrefab, bombSkillDef, bazookaSkillDef);
+            SkillDef ChronoSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "_EKKO_BODY_SPECIAL_CHRONO_BREAK_NAME",
+                skillNameToken = prefix + "_EKKO_BODY_SPECIAL_CHRONO_BREAK_NAME",
+                skillDescriptionToken = prefix + "_EKKO_BODY_SPECIAL_CHRONO_BREAK_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSpecialIcon"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Ekko.ChronoBreak)),
+                activationStateMachineName = "Slide",
+                baseMaxStock = 1,
+                baseRechargeInterval = 1f,
+                beginSkillCooldownOnSkillEnd = true,
+                canceledFromSprinting = false,
+                forceSprintDuringState = false,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.Frozen,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = true,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = true,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1
+            });
+
+            Modules.Skills.AddSpecialSkills(bodyPrefab, bombSkillDef, bazookaSkillDef, ChronoSkillDef);
             #endregion
         }
 

@@ -83,6 +83,12 @@ namespace HenryMod
         {
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+
+            //On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
+            //{
+            //    Modules.Survivors.Ekko.prefab
+            //};
+
             //Does some crazy stuff to only apply debuff when ekko hits an enemy with HIS attacks (not proc attack i.e. Ukulele)
             On.RoR2.OverlapAttack.PerformDamage += (orig, attacker, inflictor, damage, isCrit,
                 procChainMask, procCoefficient, damageColorIndex, damageType, forceVector, pushAwayForce, hitList) =>
