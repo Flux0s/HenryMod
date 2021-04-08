@@ -68,9 +68,11 @@ namespace HenryMod.Modules.Components
         public float GetTotalDamage()
         {
             float totalDamage = 0f;
+            if (this.damageHistory.Count == 0) return 0f;
             LinkedListNode<EkkoDamageTick> currentNode = this.damageHistory.Last;
             while ((DateTime.Now - currentNode.Value.damageTime).Seconds <= SkillStates.Ekko.ChronoBreak.rewindLength)
             {
+                Debug.LogWarning("Current node information id " + currentNode.Value.damageTaken + ", " + currentNode.Value.damageTime);
                 totalDamage += currentNode.Value.damageTaken;
                 if (!currentNode.Equals(this.damageHistory.First))
                 {

@@ -9,7 +9,7 @@ namespace HenryMod.SkillStates.Ekko
 {
     public class ChronoBreak : BaseSkillState
     {
-        public static float dashSpeed = 30f;
+        public static float dashSpeed = 50f;
         public static float stopThreshold = 2.5f;
         public static float rewindLength = 4f;
         public static string dodgeSoundString = "HenryRoll";
@@ -39,7 +39,7 @@ namespace HenryMod.SkillStates.Ekko
             base.characterBody.AddBuff(RoR2Content.Buffs.HiddenInvincibility);
             base.characterBody.AddBuff(RoR2Content.Buffs.Cloak);
 
-            storedPoints.ForEach(x => x.localEndTime += 10f);
+            //storedPoints.ForEach(x => x.localEndTime += 50f);
             if (base.characterBody) base.characterBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
         }
        
@@ -59,7 +59,7 @@ namespace HenryMod.SkillStates.Ekko
             {
                 Modules.Components.DamageHistory damageHistory = base.GetComponent<Modules.Components.DamageHistory>();
                 float recentDamage = damageHistory.GetTotalDamage();
-                base.characterBody.healthComponent.Heal(CalculateChronoHeal(recentDamage), new ProcChainMask());
+                base.healthComponent.Heal(CalculateChronoHeal(recentDamage), new ProcChainMask());
                 Debug.LogWarning("Ekko healed this: " + CalculateChronoHeal(recentDamage));
                 damageHistory.ClearDamageList();
                 this.outer.SetNextStateToMain();
@@ -88,6 +88,7 @@ namespace HenryMod.SkillStates.Ekko
                     {
                         return;
                     }
+                    Debug.LogWarning("Points left in the line: " + storedPoints.Count);
                     storedPoints.RemoveAt(storedPoints.Count - 2);
                     return;
                 }
@@ -131,7 +132,7 @@ namespace HenryMod.SkillStates.Ekko
 
         public override InterruptPriority GetMinimumInterruptPriority()
 		{
-			return InterruptPriority.Frozen;
+			return InterruptPriority.Death;
 		}
 
         private float CalculateChronoHeal(float damageTaken)
