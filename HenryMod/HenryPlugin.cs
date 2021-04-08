@@ -89,6 +89,19 @@ namespace HenryMod
             //    Modules.Survivors.Ekko.prefab
             //};
 
+            On.RoR2.CharacterBody.OnTakeDamageServer += (orig, self, damageReport) =>
+            {
+                if (damageReport.victim.name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    Modules.Components.DamageHistory damageHistory = damageReport.victim.GetComponent<Modules.Components.DamageHistory>();
+                    Debug.LogWarning("Ekko took " + damageReport.damageDealt + " damage");
+                    damageHistory.addDamage(damageReport.damageDealt);
+                    damageHistory.PruneDamageList();
+                    Debug.LogWarning("The total damage is " + damageHistory.GetTotalDamage());
+                }
+                orig(self, damageReport);
+            };
+
             //Does some crazy stuff to only apply debuff when ekko hits an enemy with HIS attacks (not proc attack i.e. Ukulele)
             On.RoR2.OverlapAttack.PerformDamage += (orig, attacker, inflictor, damage, isCrit,
                 procChainMask, procCoefficient, damageColorIndex, damageType, forceVector, pushAwayForce, hitList) =>

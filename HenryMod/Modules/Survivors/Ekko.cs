@@ -14,6 +14,8 @@ namespace HenryMod.Modules.Survivors
         //This sting is used for applying Ekko's passive to enemies.
         internal static string EkkoName = "EkkoBody(Clone)";
 
+        
+
         internal override GameObject bodyPrefab { get; set; }
         internal override GameObject displayPrefab { get; set; }
 
@@ -122,6 +124,7 @@ namespace HenryMod.Modules.Survivors
             this.bodyPrefab.GetComponent<SfxLocator>().deathSound = "HenryDeath";
             this.bodyPrefab.AddComponent<Components.HenryController>();
             this.bodyPrefab.AddComponent<Components.HenryTracker>();
+            this.bodyPrefab.AddComponent<Components.DamageHistory>();
 
             InitializeChronoBreakTrail();
         }
@@ -135,7 +138,7 @@ namespace HenryMod.Modules.Survivors
             chronoBreakTrail.lineRenderer.endWidth = .5f;
             chronoBreakTrail.lineRenderer.material.SetColor("_Color", Color.cyan);
             chronoBreakTrail.pointUpdateInterval = .125f;
-            chronoBreakTrail.pointLifetime = 4f;
+            chronoBreakTrail.pointLifetime = SkillStates.Ekko.ChronoBreak.rewindLength;
             chronoBreakTrail.active = true;
         }
 

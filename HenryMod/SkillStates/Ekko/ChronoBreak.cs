@@ -3,20 +3,23 @@ using RoR2;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using System.Linq;
 
 namespace HenryMod.SkillStates.Ekko
 {
     public class ChronoBreak : BaseSkillState
     {
-        public static float dashSpeed = 50f;
+        public static float dashSpeed = 30f;
         public static float stopThreshold = 2.5f;
-
+        public static float rewindLength = 4f;
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = EntityStates.Commando.DodgeState.dodgeFOV;
 
         private Animator animator;
         private List<DamageTrail.TrailPoint> storedPoints;
         private int currentPoint;
+        private float baseHealModifier = .2f;
+        private float additiveHealModifier = 3f;
 
         public override void OnEnter()
         {
@@ -31,7 +34,13 @@ namespace HenryMod.SkillStates.Ekko
             if (ChronoDamageTrail.pointsList.Count > 0) storedPoints = ChronoDamageTrail.pointsList;
             else storedPoints = new List<DamageTrail.TrailPoint>();
             currentPoint = storedPoints.Count - 2;
+
             ChronoDamageTrail.active = false;
+            base.characterBody.AddBuff(RoR2Content.Buffs.HiddenInvincibility);
+            base.characterBody.AddBuff(RoR2Content.Buffs.Cloak);
+
+            storedPoints.ForEach(x => x.localEndTime += 10f);
+            if (base.characterBody) base.characterBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
         }
        
         
@@ -48,6 +57,11 @@ namespace HenryMod.SkillStates.Ekko
 
             if (storedPoints.Count == 1)
             {
+                Modules.Components.DamageHistory damageHistory = base.GetComponent<Modules.Components.DamageHistory>();
+                float recentDamage = damageHistory.GetTotalDamage();
+                base.characterBody.healthComponent.Heal(CalculateChronoHeal(recentDamage), new ProcChainMask());
+                Debug.LogWarning("Ekko healed this: " + CalculateChronoHeal(recentDamage));
+                damageHistory.ClearDamageList();
                 this.outer.SetNextStateToMain();
                 return;
             }
@@ -96,6 +110,11 @@ namespace HenryMod.SkillStates.Ekko
             base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
             base.characterMotor.velocity = new Vector3(0f, 0f, 0f);
             base.GetComponent<DamageTrail>().active = true;
+
+            base.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);
+            base.characterBody.RemoveBuff(RoR2Content.Buffs.Cloak);
+
+            base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
         }
 
         //public override void OnSerialize(NetworkWriter writer)
@@ -110,9 +129,18 @@ namespace HenryMod.SkillStates.Ekko
         //    this.forwardDirection = reader.ReadVector3();
         //}
 
-		public override InterruptPriority GetMinimumInterruptPriority()
+        public override InterruptPriority GetMinimumInterruptPriority()
 		{
 			return InterruptPriority.Frozen;
 		}
+
+        private float CalculateChronoHeal(float damageTaken)
+        {
+            float baseHeal = damageTaken * baseHealModifier;
+            CharacterBody charBody = base.GetComponent<CharacterBody>();
+            float damagePercentOfMax = (damageTaken / charBody.maxHealth) * additiveHealModifier;
+            float additiveHeal = damagePercentOfMax * baseHeal;
+            return baseHeal + additiveHeal;
+        }
     }
 }
