@@ -97,7 +97,7 @@ namespace HenryMod.SkillStates.Ekko
             }
             else
             {
-                base.skillLocator.secondary.AddOneStock();
+                base.skillLocator.special.AddOneStock();
                 this.outer.SetNextStateToMain();
                 return;
             }
