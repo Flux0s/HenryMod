@@ -20,6 +20,7 @@ namespace HenryMod.SkillStates.Ekko
         private int currentPoint;
         private float baseHealModifier = .2f;
         private float additiveHealModifier = 3f;
+        private float localTimeStore;
 
         public override void OnEnter()
         {
@@ -39,7 +40,8 @@ namespace HenryMod.SkillStates.Ekko
             base.characterBody.AddBuff(RoR2Content.Buffs.HiddenInvincibility);
             base.characterBody.AddBuff(RoR2Content.Buffs.Cloak);
 
-            //storedPoints.ForEach(x => x.localEndTime += 50f);
+            localTimeStore = ChronoDamageTrail.localTime;
+            ChronoDamageTrail.localTime = 0f;
             if (base.characterBody) base.characterBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
         }
        
@@ -54,7 +56,7 @@ namespace HenryMod.SkillStates.Ekko
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-
+            this.localTimeStore += Time.fixedDeltaTime;
             if (storedPoints.Count == 1)
             {
                 Modules.Components.DamageHistory damageHistory = base.GetComponent<Modules.Components.DamageHistory>();
@@ -105,7 +107,7 @@ namespace HenryMod.SkillStates.Ekko
         public override void OnExit()
         {
             base.OnExit();
-
+            base.GetComponent<DamageTrail>().localTime = localTimeStore;
             base.characterMotor.disableAirControlUntilCollision = false;
 
             base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
