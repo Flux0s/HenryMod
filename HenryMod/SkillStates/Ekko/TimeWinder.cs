@@ -8,9 +8,11 @@ namespace HenryMod.SkillStates.Ekko
     public class TimeWinder : BaseSkillState
     {
         public static float damageCoefficient = 10f;
+        public static float returnDamageCoefficientModifier = 1.5f;
         public static float procCoefficient = 1f;
         public static float baseDuration = 0.65f;
         public static float throwForce = 10f;
+        public static float knockBackForce = 0f;
 
         private float duration;
         private float fireTime;
@@ -51,7 +53,7 @@ namespace HenryMod.SkillStates.Ekko
                             Util.QuaternionSafeLookRotation(aimRay.direction),
                             base.gameObject,
                             TimeWinder.damageCoefficient * this.damageStat,
-                            4000f,
+                            TimeWinder.knockBackForce,
                             base.RollCrit(),
                             DamageColorIndex.Default,
                             null,
