@@ -101,13 +101,6 @@ namespace HenryMod.Modules.Survivors
         internal override ItemDisplayRuleSet itemDisplayRuleSet { get; set; }
         internal override List<ItemDisplayRuleSet.KeyAssetRuleGroup> itemDisplayRules { get; set; }
 
-        // bazooka skill overrides
-        internal static SkillDef bazookaFireSkillDef;
-        internal static SkillDef bazookaCancelSkillDef;
-
-        internal static SkillDef bazookaFireSkillDefScepter;
-        internal static SkillDef bazookaCancelSkillDefScepter;
-
         // phaseDive skill overrides
         internal static SkillDef phaseDiveLungeSkillDef;
 
@@ -163,9 +156,6 @@ namespace HenryMod.Modules.Survivors
 
             Transform hitboxTransform = childLocator.FindChild("SwordHitbox");
             Modules.Prefabs.SetupHitbox(model, hitboxTransform, "Sword");
-
-            hitboxTransform = childLocator.FindChild("PunchHitbox");
-            Modules.Prefabs.SetupHitbox(model, hitboxTransform, "Punch");
         }
 
         internal override void InitializeSkills()
@@ -176,8 +166,6 @@ namespace HenryMod.Modules.Survivors
 
             #region Primary
             Modules.Skills.AddPrimarySkill(bodyPrefab, Modules.Skills.CreatePrimarySkillDef(new EntityStates.SerializableEntityStateType(typeof(SkillStates.SlashCombo)), "Weapon", prefix + "_EKKO_BODY_PRIMARY_SLASH_NAME", prefix + "_EKKO_BODY_PRIMARY_SLASH_DESCRIPTION", Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texPrimaryIcon"), true));
-            Modules.Skills.AddPrimarySkill(bodyPrefab, Modules.Skills.CreatePrimarySkillDef(new EntityStates.SerializableEntityStateType(typeof(SkillStates.PunchCombo)), "Weapon", prefix + "_EKKO_BODY_PRIMARY_PUNCH_NAME", prefix + "_EKKO_BODY_PRIMARY_PUNCH_DESCRIPTION", Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBoxingGlovesIcon"), true));
-            Modules.Skills.AddPrimarySkill(bodyPrefab, Modules.Skills.CreatePrimarySkillDef(new EntityStates.SerializableEntityStateType(typeof(SkillStates.ShootAlt)), "Weapon", prefix + "_EKKO_BODY_PRIMARY_GUN_NAME", prefix + "_EKKO_BODY_PRIMARY_GUN_DESCRIPTION", Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texPistolIcon"), true));
             #endregion
 
             #region Secondary
@@ -205,80 +193,7 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
             
-            SkillDef shootSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_SECONDARY_GUN_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_SECONDARY_GUN_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_SECONDARY_GUN_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSecondaryIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Shoot)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 1,
-                baseRechargeInterval = 1f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = false,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1,
-                keywordTokens = new string[] { "KEYWORD_AGILE" }
-            });
-
-            SkillDef stingerSkillDef = Modules.Skills.CreateTrackingSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_SECONDARY_STINGER_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_SECONDARY_STINGER_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_SECONDARY_STINGER_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texStingerIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Stinger.StingerEntry)),
-                activationStateMachineName = "Weapon",
-                baseMaxStock = 1,
-                baseRechargeInterval = 3f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = false,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1,
-            });
-
-            SkillDef uziSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_SECONDARY_UZI_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_SECONDARY_UZI_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_SECONDARY_UZI_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texUziIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.ShootUzi)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 32,
-                baseRechargeInterval = 4f,
-                beginSkillCooldownOnSkillEnd = true,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = true,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = true,
-                rechargeStock = 32,
-                requiredStock = 1,
-                stockToConsume = 1,
-            });
-
-            Modules.Skills.AddSecondarySkills(bodyPrefab, timeWinderSkillDef, shootSkillDef, uziSkillDef, stingerSkillDef);
+            Modules.Skills.AddSecondarySkills(bodyPrefab, timeWinderSkillDef);
             #endregion
 
             #region Utility
@@ -330,153 +245,10 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
 
-            SkillDef rollSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_UTILITY_ROLL_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_UTILITY_ROLL_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_UTILITY_ROLL_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texUtilityIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Roll)),
-                activationStateMachineName = "Body",
-                baseMaxStock = 1,
-                baseRechargeInterval = 4f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = true,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.PrioritySkill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = false,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = false,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            SkillDef shotgunSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_UTILITY_SHOTGUN_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_UTILITY_SHOTGUN_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_UTILITY_SHOTGUN_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texShotgunIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Henry.Shotgun.ShotgunBlastEntry)),
-                activationStateMachineName = "Weapon",
-                baseMaxStock = 1,
-                baseRechargeInterval = 0.51f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = true,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = false,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            Modules.Skills.AddUtilitySkills(bodyPrefab, phaseDiveSkillDef, rollSkillDef, shotgunSkillDef);
+            Modules.Skills.AddUtilitySkills(bodyPrefab, phaseDiveSkillDef);
             #endregion
 
             #region Special
-            SkillDef bombSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_SPECIAL_BOMB_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_SPECIAL_BOMB_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_SPECIAL_BOMB_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSpecialIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.ThrowBomb)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 1,
-                baseRechargeInterval = 10f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = true,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            SkillDef bazookaSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_SPECIAL_BAZOOKA_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_SPECIAL_BAZOOKA_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_SPECIAL_BAZOOKA_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBazookaIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Bazooka.BazookaEnter)),
-                activationStateMachineName = "Weapon",
-                baseMaxStock = 1,
-                baseRechargeInterval = 0f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = true,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            bazookaFireSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_PRIMARY_BAZOOKA_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_PRIMARY_BAZOOKA_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_PRIMARY_BAZOOKA_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBazookaFireIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Bazooka.BazookaCharge)),
-                activationStateMachineName = "Weapon",
-                baseMaxStock = 1,
-                baseRechargeInterval = 0f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Any,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = true,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            bazookaCancelSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_EKKO_BODY_PRIMARY_BAZOOKAOUT_NAME",
-                skillNameToken = prefix + "_EKKO_BODY_PRIMARY_BAZOOKAOUT_NAME",
-                skillDescriptionToken = prefix + "_EKKO_BODY_PRIMARY_BAZOOKAOUT_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBazookaOutIcon"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Bazooka.BazookaExit)),
-                activationStateMachineName = "Weapon",
-                baseMaxStock = 1,
-                baseRechargeInterval = 0f,
-                beginSkillCooldownOnSkillEnd = false,
-                canceledFromSprinting = false,
-                forceSprintDuringState = false,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Any,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = true,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = true,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
 
             SkillDef ChronoSkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
@@ -502,7 +274,7 @@ namespace HenryMod.Modules.Survivors
                 stockToConsume = 1
             });
 
-            Modules.Skills.AddSpecialSkills(bodyPrefab, ChronoSkillDef, bombSkillDef, bazookaSkillDef);
+            Modules.Skills.AddSpecialSkills(bodyPrefab, ChronoSkillDef);
             #endregion
         }
 
