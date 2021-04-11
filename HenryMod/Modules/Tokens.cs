@@ -368,6 +368,9 @@ namespace HenryMod.Modules
 
             LanguageAPI.Add(prefix + "PRIMARY_SCEPBAZOOKA_NAME", "Fire");
             LanguageAPI.Add(prefix + "PRIMARY_SCEPBAZOOKA_DESCRIPTION", $"Charge and fire a rocket for <style=cIsDamage>{100f * SkillStates.Bazooka.Scepter.BazookaFire.minDamageCoefficient}%-{100f * SkillStates.Bazooka.Scepter.BazookaFire.maxDamageCoefficient}% damage</style>." + Helpers.ScepterDescription("Hold two Bazookas at once."));
+
+            LanguageAPI.Add(prefix + "SPECIAL_CHRONO_BREAK_NAME", "Chrono Break");
+            LanguageAPI.Add(prefix + "SPECIAL_CHRONO_BREAK_DESCRIPTION", $"Change later!!!!!! <style=cIsDamage>{100f * SkillStates.ThrowBomb.damageCoefficient}% damage</style>.");
             #endregion
 
             #region Achievements

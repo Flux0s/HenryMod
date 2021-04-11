@@ -32,7 +32,7 @@ namespace HenryMod
         public const string MODUID = "com.rob.HenryMod";
         public const string MODNAME = "HenryMod";
         public const string MODVERSION = "1.2.4";
-        
+
 
         // a prefix for name tokens to prevent conflicts
         public const string developerPrefix = "ROB";
@@ -83,6 +83,40 @@ namespace HenryMod
         {
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+
+            On.RoR2.SurvivorPodController.OnPassengerEnter += (orig, self, passenger) =>
+            {
+                orig(self, passenger);
+                if (passenger.GetComponent<CharacterBody>().name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    LineRenderer lineRenderer = passenger.GetComponent<LineRenderer>();
+                    lineRenderer.widthMultiplier = 0f;
+                }
+            };
+
+            On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
+            {
+                orig(self, passenger);
+                if (passenger.GetComponent<CharacterBody>().name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    LineRenderer lineRenderer = passenger.GetComponent<LineRenderer>();
+                    lineRenderer.widthMultiplier = 1f;
+                }
+            };
+
+            On.RoR2.CharacterBody.OnTakeDamageServer += (orig, self, damageReport) =>
+            {
+                if (damageReport.victim.name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    Modules.Components.DamageHistory damageHistory = damageReport.victim.GetComponent<Modules.Components.DamageHistory>();
+                    // Debug.LogWarning("Ekko took " + damageReport.damageDealt + " damage");
+                    damageHistory.addDamage(damageReport.damageDealt);
+                    damageHistory.PruneDamageList();
+                    // Debug.LogWarning("The total damage is " + damageHistory.GetTotalDamage());
+                }
+                orig(self, damageReport);
+            };
+
             //Does some crazy stuff to only apply debuff when ekko hits an enemy with HIS attacks (not proc attack i.e. Ukulele)
             On.RoR2.OverlapAttack.PerformDamage += (orig, attacker, inflictor, damage, isCrit,
                 procChainMask, procCoefficient, damageColorIndex, damageType, forceVector, pushAwayForce, hitList) =>
