@@ -109,6 +109,7 @@ namespace HenryMod.Modules.CustomProjectiles
                                 Vector3 localScale = new Vector3(base.transform.localScale.x / this.slowDownScaleFactor, base.transform.localScale.y / this.slowDownScaleFactor, base.transform.localScale.z / this.slowDownScaleFactor);
                                 base.transform.localScale = localScale;
                                 base.gameObject.GetComponent<ProjectileController>().ghost.transform.localScale = localScale;
+                                base.gameObject.GetComponent<ProjectileOverlapAttack>().SetDamageCoefficient(SkillStates.Ekko.TimeWinder.returnDamageCoefficientModifier);
                             }
                             bool flag = this.Reel();
                             if (NetworkServer.active)
