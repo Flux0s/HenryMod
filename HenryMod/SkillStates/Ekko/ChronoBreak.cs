@@ -65,7 +65,7 @@ namespace HenryMod.SkillStates.Ekko
                 Modules.Components.DamageHistory damageHistory = base.GetComponent<Modules.Components.DamageHistory>();
                 float recentDamage = damageHistory.GetTotalDamage();
                 base.healthComponent.Heal(CalculateChronoHeal(recentDamage), new ProcChainMask());
-                Debug.LogWarning("Ekko healed this: " + CalculateChronoHeal(recentDamage));
+                // Debug.LogWarning("Ekko healed this: " + CalculateChronoHeal(recentDamage));
                 damageHistory.ClearDamageList();
                 this.outer.SetNextStateToMain();
                 return;
@@ -94,7 +94,7 @@ namespace HenryMod.SkillStates.Ekko
                     {
                         return;
                     }
-                    Debug.LogWarning("Points left in the line: " + storedPoints.Count);
+                    // Debug.LogWarning("Points left in the line: " + storedPoints.Count);
                     storedPoints.RemoveAt(storedPoints.Count - 2);
                     return;
                 }

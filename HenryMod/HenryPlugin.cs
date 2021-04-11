@@ -32,7 +32,7 @@ namespace HenryMod
         public const string MODUID = "com.rob.HenryMod";
         public const string MODNAME = "HenryMod";
         public const string MODVERSION = "1.2.4";
-        
+
 
         // a prefix for name tokens to prevent conflicts
         public const string developerPrefix = "ROB";
@@ -84,20 +84,23 @@ namespace HenryMod
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
 
-            //On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
-            //{
-            //    Modules.Survivors.Ekko.prefab
-            //};
+            On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
+            {
+                if (passenger.GetComponent<CharacterBody>().name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    passenger.GetComponent<LineRenderer>().widthMultiplier = 10f;
+                }
+            };
 
             On.RoR2.CharacterBody.OnTakeDamageServer += (orig, self, damageReport) =>
             {
                 if (damageReport.victim.name == Modules.Survivors.Ekko.EkkoName)
                 {
                     Modules.Components.DamageHistory damageHistory = damageReport.victim.GetComponent<Modules.Components.DamageHistory>();
-                    Debug.LogWarning("Ekko took " + damageReport.damageDealt + " damage");
+                    // Debug.LogWarning("Ekko took " + damageReport.damageDealt + " damage");
                     damageHistory.addDamage(damageReport.damageDealt);
                     damageHistory.PruneDamageList();
-                    Debug.LogWarning("The total damage is " + damageHistory.GetTotalDamage());
+                    // Debug.LogWarning("The total damage is " + damageHistory.GetTotalDamage());
                 }
                 orig(self, damageReport);
             };

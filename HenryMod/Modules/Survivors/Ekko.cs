@@ -135,6 +135,8 @@ namespace HenryMod.Modules.Survivors
             chronoBreakTrail.lineRenderer = this.bodyPrefab.AddComponent<LineRenderer>();
             chronoBreakTrail.destroyTrailSegments = true;
             chronoBreakTrail.owner = this.bodyPrefab;
+            // Set the line width to 0 on spawn to workaround line during pod animation
+            chronoBreakTrail.lineRenderer.widthMultiplier = 0f;
             chronoBreakTrail.lineRenderer.endWidth = .5f;
             chronoBreakTrail.lineRenderer.material.SetColor("_Color", Color.cyan);
             chronoBreakTrail.pointUpdateInterval = .125f;
