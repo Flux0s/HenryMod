@@ -84,11 +84,23 @@ namespace HenryMod
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
 
-            On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
+            On.RoR2.SurvivorPodController.OnPassengerEnter += (orig, self, passenger) =>
             {
+                orig(self, passenger);
                 if (passenger.GetComponent<CharacterBody>().name == Modules.Survivors.Ekko.EkkoName)
                 {
-                    passenger.GetComponent<LineRenderer>().widthMultiplier = 10f;
+                    LineRenderer lineRenderer = passenger.GetComponent<LineRenderer>();
+                    lineRenderer.widthMultiplier = 0f;
+                }
+            };
+
+            On.RoR2.SurvivorPodController.OnPassengerExit += (orig, self, passenger) =>
+            {
+                orig(self, passenger);
+                if (passenger.GetComponent<CharacterBody>().name == Modules.Survivors.Ekko.EkkoName)
+                {
+                    LineRenderer lineRenderer = passenger.GetComponent<LineRenderer>();
+                    lineRenderer.widthMultiplier = 1f;
                 }
             };
 

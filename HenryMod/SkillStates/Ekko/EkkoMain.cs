@@ -51,17 +51,19 @@ namespace HenryMod.SkillStates.Ekko
                     return;
                 }
             }
-
-            // debug
-            /*if (base.isAuthority && Input.GetKeyDown("z"))
-            {
-                base.characterBody.master.inventory.GiveItem(RoR2Content.Items.Syringe, 5);
-            }*/
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            // VehicleSeat vehicleSeat = base.characterBody.preferredPodPrefab.GetComponent<VehicleSeat>();
+            // // Enable Chronobreak trail only when not in a 'vehicle'
+            // if (vehicleSeat.enabled)
+            // {
+            //     Debug.LogWarning("Found vehicleSeat with playerControllerId: " + vehicleSeat.playerControllerId);
+            //     base.GetComponent<LineRenderer>().widthMultiplier = 1f;
+            // }
+            // else base.GetComponent<LineRenderer>().widthMultiplier = 0f;
 
             if (this.animator)
             {
@@ -72,18 +74,6 @@ namespace HenryMod.SkillStates.Ekko
 
                 // rest idle
                 this.animator.SetBool("inCombat", (!base.characterBody.outOfCombat || !base.characterBody.outOfDanger));
-            }
-
-            if (this.henryController)
-            {
-                this.animator.SetBool("inBazooka", this.henryController.hasBazookaReady);
-
-                // bazooka stuff
-                if (this.henryController.hasBazookaReady)
-                {
-                    base.characterBody.isSprinting = false;
-                    base.StartAimMode(0.5f, false);
-                }
             }
         }
     }
