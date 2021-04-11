@@ -8,9 +8,9 @@ namespace HenryMod.SkillStates.Ekko
 {
     public class ChronoBreak : BaseSkillState
     {
-        public static float baseDashSpeed = 50f;
-        public static float stopThreshold = 2.5f;
-        public static float rewindLength = 4f;
+        public static float baseDashSpeed = 30f;
+        public static float stopThreshold = 3f;
+        public static float rewindLength = 3f;
         public static float blastRadius = 30f;
         public static float blastDamageCoefficient = 25f;
         public static float blastProcCoefficient = 1f;
@@ -73,7 +73,8 @@ namespace HenryMod.SkillStates.Ekko
 
             if (base.isAuthority)
             {
-                Vector3 velocity = (storedPoints[storedPoints.Count - 2].position - base.transform.position).normalized * ChronoBreak.baseDashSpeed;
+                float velocityModifier = (base.transform.position - storedPoints[storedPoints.Count - 2].position).magnitude;
+                Vector3 velocity = (storedPoints[storedPoints.Count - 2].position - base.transform.position).normalized * ChronoBreak.baseDashSpeed * velocityModifier;
                 base.characterMotor.velocity = velocity;
                 base.characterDirection.forward = base.characterMotor.velocity.normalized;
 
