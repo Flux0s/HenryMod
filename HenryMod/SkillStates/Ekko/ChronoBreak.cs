@@ -1,22 +1,25 @@
 ﻿using EntityStates;
 using RoR2;
+using R2API;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Networking;
-using System.Linq;
 
 namespace HenryMod.SkillStates.Ekko
 {
     public class ChronoBreak : BaseSkillState
     {
-        public static float dashSpeed = 50f;
+        public static float baseDashSpeed = 50f;
         public static float stopThreshold = 2.5f;
         public static float rewindLength = 4f;
-        public static string dodgeSoundString = "HenryRoll";
-        public static float dodgeFOV = EntityStates.Commando.DodgeState.dodgeFOV;
+        public static float blastRadius = 30f;
+        public static float blastDamageCoefficient = 25f;
+        public static float blastProcCoefficient = 1f;
+        public static float blastForce = 100f;
+        public static DamageType blastDamageType = DamageType.Generic;
 
         private Animator animator;
         private List<DamageTrail.TrailPoint> storedPoints;
+        private GameObject explosionEffectPrefab;
         private int currentPoint;
         private float baseHealModifier = .2f;
         private float additiveHealModifier = 3f;
@@ -44,8 +47,8 @@ namespace HenryMod.SkillStates.Ekko
             ChronoDamageTrail.localTime = 0f;
             if (base.characterBody) base.characterBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
         }
-       
-        
+
+
 
         private bool Reel(Vector3 position1, Vector3 position2)
         {
@@ -70,12 +73,12 @@ namespace HenryMod.SkillStates.Ekko
 
             if (base.isAuthority)
             {
-                Vector3 velocity = (storedPoints[storedPoints.Count - 2].position - base.transform.position).normalized * ChronoBreak.dashSpeed;
+                Vector3 velocity = (storedPoints[storedPoints.Count - 2].position - base.transform.position).normalized * ChronoBreak.baseDashSpeed;
                 base.characterMotor.velocity = velocity;
                 base.characterDirection.forward = base.characterMotor.velocity.normalized;
 
                 // don't get locked in a stinger forever (idk what would cause this but it is entirely possible)
-                if (base.fixedAge >= 20f)
+                if (base.fixedAge >= 10f)
                 {
                     this.outer.SetNextStateToMain();
                     return;
@@ -107,13 +110,16 @@ namespace HenryMod.SkillStates.Ekko
         public override void OnExit()
         {
             base.OnExit();
+
             base.GetComponent<DamageTrail>().localTime = localTimeStore;
+            this.explosionEffectPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/effects/ShopkeeperKickFromShopExplosion"), "ChronoBreakPrefab");
+            ExplodeServer();
+
             base.characterMotor.disableAirControlUntilCollision = false;
-
-            base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
             base.characterMotor.velocity = new Vector3(0f, 0f, 0f);
-            base.GetComponent<DamageTrail>().active = true;
+            base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
 
+            base.GetComponent<DamageTrail>().active = true;
             base.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);
             base.characterBody.RemoveBuff(RoR2Content.Buffs.Cloak);
 
@@ -133,9 +139,9 @@ namespace HenryMod.SkillStates.Ekko
         //}
 
         public override InterruptPriority GetMinimumInterruptPriority()
-		{
-			return InterruptPriority.Death;
-		}
+        {
+            return InterruptPriority.Frozen;
+        }
 
         private float CalculateChronoHeal(float damageTaken)
         {
@@ -144,6 +150,35 @@ namespace HenryMod.SkillStates.Ekko
             float damagePercentOfMax = (damageTaken / charBody.maxHealth) * additiveHealModifier;
             float additiveHeal = damagePercentOfMax * baseHeal;
             return baseHeal + additiveHeal;
+        }
+
+        private void ExplodeServer()
+        {
+            EffectData effectData = new EffectData
+            {
+                origin = base.transform.position,
+                scale = blastRadius
+            };
+            EffectManager.SpawnEffect(this.explosionEffectPrefab, effectData, true);
+            new BlastAttack
+            {
+                attacker = base.characterBody.gameObject,
+                baseDamage = blastDamageCoefficient * base.characterBody.damage,
+                baseForce = blastForce,
+                // bonusForce = blastBonusForce,
+                attackerFiltering = AttackerFiltering.NeverHit,
+                crit = base.characterBody.RollCrit(),
+                damageColorIndex = DamageColorIndex.Item,
+                damageType = blastDamageType,
+                falloffModel = BlastAttack.FalloffModel.Linear,
+                inflictor = base.gameObject,
+                position = base.transform.position,
+                procChainMask = default(ProcChainMask),
+                procCoefficient = blastProcCoefficient,
+                radius = blastRadius,
+                teamIndex = base.characterBody.teamComponent.teamIndex
+            }.Fire();
+            // Util.PlaySound(this.explosionSoundString, base.gameObject);
         }
     }
 }
