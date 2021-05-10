@@ -4,7 +4,7 @@ using HenryMod.Modules.Misc;
 using MonoMod.RuntimeDetour;
 using R2API;
 using R2API.Utils;
-using Rewired.Data;
+// using Rewired.Data;
 using RoR2;
 using RoR2.CharacterAI;
 using RoR2.Skills;
@@ -107,11 +107,11 @@ namespace HenryMod.Modules.Enemies
                 }
 
                 //Add actions to RoR2.InputCatalog
-                ExtraInputs.AddActionsToInputCatalog();
+                // ExtraInputs.AddActionsToInputCatalog();
 
                 //Hook to method with some rewired initialization (or not? Anyway it works) to add custom actions
-                var userDataInit = typeof(UserData).GetMethod("KFIfLMJhIpfzcbhqEXHpaKpGsgeZ", BindingFlags.NonPublic | BindingFlags.Instance);
-                new Hook(userDataInit, (Action<Action<UserData>, UserData>)ExtraInputs.AddCustomActions);
+                // var userDataInit = typeof(UserData).GetMethod("KFIfLMJhIpfzcbhqEXHpaKpGsgeZ", BindingFlags.NonPublic | BindingFlags.Instance);
+                // new Hook(userDataInit, (Action<Action<UserData>, UserData>)ExtraInputs.AddCustomActions);
 
                 //Adding custom actions to Settings
                 On.RoR2.UI.SettingsPanelController.Start += SettingsPanelControllerStart;

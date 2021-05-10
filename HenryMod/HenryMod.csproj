@@ -53,6 +53,14 @@
       <HintPath>..\libs\Facepunch.Steamworks.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="HGCSharpUtils">
+      <HintPath>..\libs\HGCSharpUtils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="HGUnityUtils">
+      <HintPath>..\libs\HGUnityUtils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>..\libs\MMHOOK_Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
@@ -87,10 +95,6 @@
     </Reference>
     <Reference Include="R2API">
       <HintPath>..\libs\R2API.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Rewired_Core">
-      <HintPath>..\libs\Rewired_Core.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">

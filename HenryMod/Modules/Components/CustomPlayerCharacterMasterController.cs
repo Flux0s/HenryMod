@@ -36,10 +36,10 @@ namespace HenryMod.Modules.Components
 
             bool swapSkillState = false;
 
-            if (PlayerCharacterMasterController.CanSendBodyInput(playerCharacterMasterController.networkUser, out _, out var inputPlayer, out _))
-            {
-                swapSkillState = inputPlayer.GetButton(RewiredActions.WeaponSwapSkill);
-            }
+            // if (PlayerCharacterMasterController.CanSendBodyInput(playerCharacterMasterController.networkUser, out _, out var inputPlayer, out _))
+            // {
+            //     swapSkillState = inputPlayer.GetButton(RewiredActions.WeaponSwapSkill);
+            // }
 
             this.customInputBank.weaponSwapSkill.PushState(swapSkillState);
         }

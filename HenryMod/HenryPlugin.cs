@@ -69,12 +69,14 @@ namespace HenryMod
             // use it as an example for your own nemesis if you want i suppose
             //new Modules.Enemies.Nemry().CreateCharacter();
 
-            new Modules.ContentPacks().CreateContentPack();
+            new Modules.ContentPacks().Initialize();
+
+            RoR2.ContentManagement.ContentManager.onContentPacksAssigned += LateSetup;
 
             Hook();
         }
 
-        private void Start()
+        private void LateSetup(HG.ReadOnlyArray<RoR2.ContentManagement.ReadOnlyContentPack> obj)
         {
             Modules.Survivors.Henry.instance.SetItemDisplays();
         }
