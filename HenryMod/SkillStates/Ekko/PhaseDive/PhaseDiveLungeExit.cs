@@ -13,8 +13,8 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
         public override void OnEnter()
         {
             base.OnEnter();
-			base.SmallHop(base.characterMotor, PhaseDiveLunge.hopForce);
-			base.PlayAnimation("FullBody, Override", "LungeSlash", "LungeSlash.playbackRate", 2f * PhaseDiveLungeExit.duration);
+            base.SmallHop(base.characterMotor, PhaseDiveLunge.hopForce);
+            base.PlayAnimation("FullBody, Override", "LungeSlash", "LungeSlash.playbackRate", 2f * PhaseDiveLungeExit.duration);
         }
 
         public override void FixedUpdate()

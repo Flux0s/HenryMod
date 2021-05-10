@@ -20,25 +20,9 @@ namespace HenryMod.Modules
 
         internal static void RegisterBuffs()
         {
-            // fix the buff catalog to actually register our buffs
-            IL.RoR2.BuffCatalog.Init += FixBuffCatalog;
-
             armorBuff = AddNewBuff("HenryArmorBuff", Resources.Load<Sprite>("Textures/BuffIcons/texBuffGenericShield"), Color.white, false, false);
             //Makes a debuff for ekko's passive ability, Z-Drive Resonance
             zDriveDebuff = AddNewBuff("Z-Drive Resonance Stacks", Resources.Load<Sprite>("Textures/BuffIcons/texBuffGenericShield"), Color.cyan, true, true);
-        }
-
-        internal static void FixBuffCatalog(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.Next.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.buffDefs)))
-            {
-                return;
-            }
-
-            c.Remove();
-            c.Emit(OpCodes.Ldsfld, typeof(ContentManager).GetField(nameof(ContentManager.buffDefs)));
         }
 
         // simple helper method

@@ -109,9 +109,9 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
             this.forwardDirection = reader.ReadVector3();
         }
 
-		public override InterruptPriority GetMinimumInterruptPriority()
-		{
-			return InterruptPriority.Frozen;
-		}
+        public override InterruptPriority GetMinimumInterruptPriority()
+        {
+            return InterruptPriority.Frozen;
+        }
     }
 }
