@@ -109,7 +109,6 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
         public override void OnExit()
         {
             base.OnExit();
-            base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
             base.characterMotor.velocity = new Vector3(0f, 0f, 0f);
             this.tracker.enabled = false;
 

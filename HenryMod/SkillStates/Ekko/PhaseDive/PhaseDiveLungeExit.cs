@@ -26,6 +26,14 @@ namespace HenryMod.SkillStates.Ekko.PhaseDive
                 this.outer.SetNextStateToMain();
                 return;
             }
+
+
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            base.characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()
