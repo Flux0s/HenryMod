@@ -2,7 +2,7 @@
 {
     internal static class StaticValues
     {
-        internal const float swordDamageCoefficient = 2.8f;
+        internal const float swordDamageCoefficient = 1.8f;
         internal const float boxingGlovesDamageCoefficient = 2.4f;
         internal const float pistolDamageCoefficient = 0.9f;
 

@@ -10,8 +10,8 @@ namespace HenryMod.SkillStates.Ekko
     {
         public static float baseDashSpeed = 30f;
         public static float stopThreshold = 3f;
-        public static float rewindLength = 3f;
-        public static float blastRadius = 30f;
+        public static float rewindLength = 2.5f;
+        public static float blastRadius = 50f;
         public static float blastDamageCoefficient = 25f;
         public static float blastProcCoefficient = 1f;
         public static float blastForce = 100f;
